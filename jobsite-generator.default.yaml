@@ -1,0 +1,42 @@
+
+# basic information for generating and executing this definition
+SenzaInfo:
+  StackName: jobsite-generator
+  Parameters:
+    - ImageVersion:
+        Description: "Docker image version of jobsite-generator."
+
+# a list of senza components to apply to the definition
+SenzaComponents:
+
+  # this basic configuration is required for the other components
+  - Configuration:
+      Type: Senza::StupsAutoConfiguration # auto-detect network setup
+
+  # will create a launch configuration and auto scaling group with scaling triggers
+  - AppServer:
+      Type: Senza::TaupageAutoScalingGroup
+      InstanceType: t2.micro
+      SecurityGroups:
+        - app-jobsite-generator
+      IamRoles:
+        - app-jobsite-generator
+      ElasticLoadBalancer: AppLoadBalancer
+      TaupageConfig:
+        runtime: Docker
+        source: "tfox/jobsite-generator:{{Arguments.ImageVersion}}"
+        environment:
+          S3BUCKET_QA: "zalando-jobsite-qa"
+          S3REGION_QA: "eu-central-1"
+          PRISMIC_SECRET: "<TODO-FILL-IN>"
+          PRISMIC_APIURL: "<TODO-FILL-IN>"
+        ports:
+          8080: 8080
+
+  # creates an ELB entry and Route53 domains to this ELB
+  - AppLoadBalancer:
+      Type: Senza::WeightedDnsElasticLoadBalancer
+      HTTPPort: 8080
+      HealthCheckPath: /
+      SecurityGroups:
+        - app-jobsite-generator-lb
