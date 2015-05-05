@@ -48,7 +48,9 @@ Note: a re-login is needed every two hours.
 
 ## Create a new AWS identity
 
-Log in with your email address (firstname.lastname.extern@zalando.de).
+Log in with your email address (firstname.lastname.extern@zalando.de). The profile name
+is arbitrary (local only), but a good guess would be for example "aws-tfox-jobsite" which
+will also be used later in this documentation.
 
     $ mai create aws-tfox-jobsite
     Identity provider URL: aws.zalando.net
