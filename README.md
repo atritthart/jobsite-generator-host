@@ -216,6 +216,20 @@ This has already been done, but documentation left here as a reference if needed
 
 # Troubleshooting
 
+## Disabling CloudFormation rollback on failure to enable EC2 host debugging
+
+Use the "--disable-rollback" switch when deploying:
+
+    $ senza create --help
+    [...]
+      --disable-rollback      Disable Cloud Formation rollback on failure
+    [...]
+
+For example:
+
+    $ senza create --disable-rollback jobsite-generator.yaml 42 1.3
+
+
 ## Debugging EC2 with SSH
 
 Example:
