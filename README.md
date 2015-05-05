@@ -194,10 +194,33 @@ This has already been done, but documentation left here as a reference if needed
 
 
 
-# Debugging with SSH
+# Troubleshooting
 
-    piu --even-url https://even.stups.zalan.do --odd-host odd-eu-central-1.workplace.zalan.do \
-     --user ekantola 172.31.145.50 "Just testing around"
+## Debugging EC2 with SSH
+
+Example:
+
+    $ piu --even-url https://even.stups.zalan.do --odd-host odd-eu-central-1.workplace.zalan.do \
+      --user ekantola 172.31.145.144 "Just testing around"
+    Password: 
+    Requesting access to host 172.31.145.144 via odd-eu-central-1.workplace.zalan.do for ekantola..
+    Access to host odd-eu-central-1.workplace.zalan.do/52.28.48.168 for user ekantola was granted.
+    You can now access your server with the following command:
+    ssh -tA ekantola@odd-eu-central-1.workplace.zalan.do ssh ekantola@172.31.145.144
+
+We need a running ssh-agent with the identity file matching to the one you uploaded in ZACK:
+
+    $ ssh-add
+    Identity added: /Users/ekan/.ssh/id_rsa (/Users/ekan/.ssh/id_rsa)
+
+Now logging in with the ssh cmdline output by Piu should work:
+
+    $ ssh -tA ekantola@odd-eu-central-1.workplace.zalan.do ssh ekantola@172.31.145.144
+
+## Zalando STUPS hints
+
+See http://stups.readthedocs.org/en/latest/user-guide/troubleshooting.html
+
 
 
 
