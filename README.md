@@ -27,6 +27,16 @@ so the first time after cloning you need to init and update them. Example:
 This will clone static-site-gen, metalsmith-greenhouse and swig-viewmodel into subdirectories.
 
 
+## Configure jobsite-generator-host
+
+Copy conf template to a local one:
+
+    cp jobsite-generator.default.yaml jobsite-generator.yaml
+
+Then fill in the "PRISMIC_" secrets. you can retrieve the values from the prismic.io config
+pages ("API&Security" and "Webhooks").
+
+
 ## Verify you are able to log into the AWS account
 
 1. Go to http://aws.zalando.net and use your email address
