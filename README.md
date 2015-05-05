@@ -90,14 +90,14 @@ Run "senza delete jobsite-generator.yaml". Example:
 
 ## Create the CloudFormation stack with Senza
 
-Run "senza create jobsite-generator.yaml <myapp-version> <dockerimg-version>", for example:
+Run "senza create jobsite-generator.yaml &lt;myapp-version> &lt;dockerimg-version>", for example:
 
     $ senza create jobsite-generator.yaml 42 1.3
     Generating Cloud Formation template.. OK
     Creating Cloud Formation stack jobsite-generator-42.. OK
 
 You can follow the CloudFormation init events either in the web console, or on the command
-line by running "senza events test.yaml <myapp-version>":
+line by running "senza events test.yaml &lt;myapp-version>":
 
     $ senza events tfox-jobsite.yaml 42 --watch=2
 
