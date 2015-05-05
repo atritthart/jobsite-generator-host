@@ -9,6 +9,19 @@ website through the integrated NodeJS application and corresponding gulp tasks.
 
 # First time development environment setup
 
+## Clone this project and pull in submodules
+
+The jobsite-generator-host repository also includes the other three repos as git submodules,
+so the first time after cloning you need to init and update them. Example:
+
+    git clone git@github.com:zalando/jobsite-generator-host.git
+    git checkout develop
+    git submodule init
+    git submodule update
+
+This will clone static-site-gen, metalsmith-greenhouse and swig-viewmodel into subdirectories.
+
+
 ## Verify you are able to log into the AWS account
 
 1. Go to http://aws.zalando.net and use your email address
