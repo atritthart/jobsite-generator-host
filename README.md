@@ -92,14 +92,8 @@ This is needed for Piu SSH access to EC2 instances.
 The images need to be pushed to the Pier One Docker registry that is accessible from
 Zalando network: http://stups.readthedocs.org/en/latest/components/pierone.html .
 
-On the first run, clone repo:
-
-	git clone git@code.futurice.com:zalando_tfox/jobsite-generator-host .
-
-Then:
-
-	cd jobsite-generator-host
-	git pull
+    cd jobsite-generator-host
+    git pull
     docker build -t pierone.stups.zalan.do/tfox/jobsite-generator:1.3 .
     docker push pierone.stups.zalan.do/tfox/jobsite-generator:1.3
 
