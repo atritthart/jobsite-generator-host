@@ -50,6 +50,19 @@ Create temporary credentials:
     Writing temporary AWS credentials.. OK
 
 
+## Upload SSH public key in ZACK
+
+This is needed for Piu SSH access to EC2 instances.
+
+1. Go to https://access.zalando.net
+2. Choose Settings in top right corner (gear icon)
+3. In Certificates box, click the green "key plus" icon in top right corner
+4. Ensure "SSH Key" is selected as the certificate type, then select your SSH public
+   key file and click "Request Certifcate"
+5. Wait for someone to approve the request. After that, you should be able to SSH
+   into your EC2 instances.
+
+
 
 
 # Creating or updating the Jobsite Generator instance
