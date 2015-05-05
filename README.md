@@ -9,6 +9,11 @@ website through the integrated NodeJS application and corresponding gulp tasks.
 
 # First time development environment setup
 
+## Ensure you have Python 3 installed
+
+For example, Mac OS X & Homebrew: `brew install python3`
+
+
 ## Clone this project and pull in submodules
 
 The jobsite-generator-host repository also includes the other three repos as git submodules,
