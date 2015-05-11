@@ -253,6 +253,9 @@ Now logging in with the ssh cmdline output by Piu should work:
 
     $ ssh -tA ekantola@odd-eu-central-1.workplace.zalan.do ssh ekantola@172.31.145.144
 
+The first place to start looking for errors would be `/var/log/syslog`.
+
+
 ## Zalando STUPS hints
 
 See http://stups.readthedocs.org/en/latest/user-guide/troubleshooting.html
