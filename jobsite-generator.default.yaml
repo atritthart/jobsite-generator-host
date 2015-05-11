@@ -31,6 +31,8 @@ SenzaComponents:
           PRISMIC_SECRET: "<TODO-FILL-IN>"
           PRISMIC_APIURL: "<TODO-FILL-IN>"
           TFOX_ENV: qa
+          # workaround for https://github.com/tkellen/js-v8flags/issues/17
+          HOME: "/opt/tfox/static-site-gen/build"
         ports:
           8080: 8080
 
