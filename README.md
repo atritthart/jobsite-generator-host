@@ -128,14 +128,18 @@ Run "senza delete jobsite-generator.yaml". Example:
 
 ## Create the CloudFormation stack with Senza
 
-Run "senza create jobsite-generator.yaml &lt;myapp-version> &lt;dockerimg-version>", for example:
+Run `senza create jobsite-generator.yaml <myapp-version> <dockerimg-version>`, for example:
 
     $ senza create jobsite-generator.yaml 42 1.3
     Generating Cloud Formation template.. OK
     Creating Cloud Formation stack jobsite-generator-42.. OK
 
+&lt;myapp-version> should be incremented on every deployment. This will create
+a CloudFormation stack jobsite-generator-&lt;myapp-version> and use version
+&lt;dockerimg-version> Docker image from Pier One.
+
 You can follow the CloudFormation init events either in the web console, or on the command
-line by running "senza events test.yaml &lt;myapp-version>":
+line by running `senza events test.yaml <myapp-version>`:
 
     $ senza events tfox-jobsite.yaml 42 --watch=2
 
