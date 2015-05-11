@@ -184,8 +184,7 @@ This has already been done, but documentation left here as a reference if needed
 ## S3 bucket setup
 
 1. Create a bucket with the name zalando-jobsite-<env> (<env>=dev/qa/prod)
-2. Set bucket world-readable and jobsite generator writable in Properties => Permissions:
-   "Add bucket policy" with content
+2. Set bucket world-readable Properties => Permissions: "Add bucket policy" with content
 
         {
           "Version": "2012-10-17",
@@ -195,21 +194,7 @@ This has already been done, but documentation left here as a reference if needed
               "Effect": "Allow",
               "Principal": "*",
               "Action": "s3:GetObject",
-              "Resource": "arn:aws:s3:::zalando-jobsite-qa/*"
-            },
-            {
-              "Sid": "JobsiteGeneratorWriteObject",
-              "Action": [
-                "s3:DeleteObject",
-                "s3:PutObject"
-              ],
-              "Effect": "Allow",
-              "Resource": "arn:aws:s3:::zalando-jobsite-qa/*",
-              "Principal": {
-                "AWS": [
-                  "arn:aws:iam::067144859345:role/app-jobsite-generator"
-                ]
-              }
+              "Resource": "arn:aws:s3:::tech.workplace.zalan.do/*"
             }
           ]
         }
