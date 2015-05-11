@@ -306,3 +306,19 @@ Provided you have the server running locally, simulating a webhook trigger with 
 
     curl -H 'Content-Type: application/json' -v http://127.0.0.1:8080/prismic-hook \
      --data '{"secret":"1234","apiUrl":"https://zalando-jobsite.prismic.io/api","type":"api-update"}'
+
+
+## AWS Beanstalk deployment for testing elsewhere
+
+Deployment can be handled with AWS Beanstalk CLI tools
+([Setup Instructions](http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/eb-cli3-getting-set-up.html)).
+
+To deploy the currently checked out directory with the CLI tools, run: `eb deploy`
+
+The hosting environment needs to specify the following environment variables
+to deploy to S3: S3REGION, S3BUCKET, PRISMIC_SECRET, PRISMIC_APIURL.
+
+Optionally also: S3KEY, S3SECRET unless you have configured the EB EC2 role to have sufficient
+write access to EC2.
+
+The port forwarding for the AWS Beanstalk load balancer is defined in `Dockerrun.aws.json`
