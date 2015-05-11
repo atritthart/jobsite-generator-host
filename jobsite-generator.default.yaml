@@ -26,7 +26,7 @@ SenzaComponents:
         runtime: Docker
         source: "pierone.stups.zalan.do/tfox/jobsite-generator:{{Arguments.ImageVersion}}"
         environment:
-          S3BUCKET_QA: "zalando-jobsite-qa"
+          S3BUCKET_QA: "tech.workplace.zalan.do"
           S3REGION_QA: "eu-central-1"
           PRISMIC_SECRET: "<TODO-FILL-IN>"
           PRISMIC_APIURL: "<TODO-FILL-IN>"
