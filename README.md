@@ -203,6 +203,13 @@ This has already been done, but documentation left here as a reference if needed
    index.html
 
 
+## Prismic.io webhooks setup
+
+https://zalando-jobsite.prismic.io/settings/webhooks/ => introduce a secret,
+point to the generator webhook URL (e.g. https://my.domain.name/prismic-hook)
+activate the webhook.
+
+
 
 
 # Troubleshooting
