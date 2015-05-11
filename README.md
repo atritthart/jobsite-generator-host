@@ -249,12 +249,37 @@ See http://stups.readthedocs.org/en/latest/user-guide/troubleshooting.html
 
 
 
-# Running in development environment
+# Development environment
+
+## Running the static-site-gen server
+
+Setting up environment:
+
+    export PRISMIC_SECRET=1234
+    export PRISMIC_APIURL=https://zalando-jobsite.prismic.io/api
+
+    $ cd static-site-gen
+    $ server.js
+    Server listening at http://0.0.0.0:8080
+
+Debug mode, to output requests on console:
+
+    $ JOBSITE_GENERATOR_DEBUG=1 node server.js
+    Debug logging enabled
+    Server listening at http://0.0.0.0:8080
+
+
+## Running the Docker container
 
 After building the Docker image, run app from docker container:
 
     docker run -e "PRISMIC_SECRET=<PRISMIC_SECRET>" -e "PRISMIC_APIURL=<PRIMSIC_API_URL>" \
-     -p 8080:8080 -i -t zalando/tfox
+     -p 8080:8080 -i -t pierone.stups.zalan.do/tfox/jobsite-generator:1.3
+
+Exmaple:
+
+    docker run -e PRISMIC_SECRET=1234 -e PRISMIC_APIURL=https://zalando-jobsite.prismic.io/api \
+     -p 8080:8080 -i -t pierone.stups.zalan.do/tfox/jobsite-generator:1.3
 
 The environment variables used by the node application need to be passed via
 the `-e` parameter of `docker run`. For production AWS, the values are taken from
@@ -264,5 +289,13 @@ in a development host.
 You can retrieve the secret and the API URL from the prismic.io config pages
 ("API&Security" and "Webhooks").
 
-If you run docker in Virtualbox (e.g. boot2docker) you may need to forward the port 8080
+If you run docker in VirtualBox (e.g. boot2docker) you may need to forward the port 8080
 in VirtualBox, too.
+
+
+## Testing webhooks manually
+
+Provided you have the server running locally, simulating a webhook trigger with curl:
+
+    curl -H 'Content-Type: application/json' -v http://127.0.0.1:8080/prismic-hook \
+     --data '{"secret":"1234","apiUrl":"https://zalando-jobsite.prismic.io/api","type":"api-update"}'
