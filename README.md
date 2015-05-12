@@ -57,6 +57,13 @@ Note: a re-login is needed every two hours.
 - Senza: CloudFormation management, http://stups.readthedocs.org/en/latest/components/senza.html
 - Piu: SSH to EC2, http://stups.readthedocs.org/en/latest/components/piu.html
 
+For Senza, you also might want to configure the AWS region in order to avoid
+having to give a `--region=eu-central-1` on every run. Edit `~/.aws/config` and
+add the region :
+
+    [default]
+    region = eu-central-1
+
 
 ## Create a new AWS identity
 
@@ -103,9 +110,20 @@ This is needed for Piu SSH access to EC2 instances.
 
 Deploy to dev first to test:
 
+    cd swig-viewmodel
+    git checkout develop
+    git pull --rebase
+    git rebase qa
+
+    cd metalsmith-greenhouse
+    git checkout develop
+    git pull --rebase
+    git rebase qa
+
     cd static-site-gen
-    git checkout qa
-    git pull
+    git checkout develop
+    git pull --rebase
+    git rebase qa
     ./node_modules/.bin/gulp deploy -e dev
 
 In http://zalando-tfox-dev.s3-website.eu-central-1.amazonaws.com/build/latest 
@@ -119,23 +137,62 @@ check manually:
 * One individual blog post
 * One location
 
+After tests pass, merge every changed submodule to QA:
 
-## Update QA branches for all submodules to point to latest
+    git checkout qa
+    git merge develop
+    git push
 
-TODO
+
+## Check out and update the superproject if needed
+
+    cd jobsite-generator-host
+    git checkout develop
+
+Make sure your Senza YAML configuration is up to date:
+
+    diff jobsite-generator.default.yaml jobsite-generator.yaml
+
+If there are other differences than the S3 credentials, update your config
+file accordingly.
+
+Then, commit submodule reference updates in the jobsite-generator-host project
+and merge to QA:
+
+    git add static-site-gen metalsmith-greenhouse swig-viewmodel
+    git commit
+    git rebase qa
+    git push origin develop
+    git checkout qa
+    git merge develop
+    git push origin qa
+
+
+## Ensure you have the most recent Node.js 0.10 base image available
+
+    docker pull node:0.10
 
 
 ## Create or update the Docker image to latest version
 
 The images need to be pushed to the Pier One Docker registry that is accessible from
-Zalando network: http://stups.readthedocs.org/en/latest/components/pierone.html .
-Example for version 1.3:
+Zalando network, http://stups.readthedocs.org/en/latest/components/pierone.html
+(UI in https://pierone.stups.zalan.do/ui/). The new image version should be
+greater than the current latest one. You can find out the running container's
+image version by running `senza list` and checking the ImageVersion in
+Description:
+
+    $ senza list
+    Stack Name       │Ver.│Status         │Created│Description                            
+    jobsite-generator 13   CREATE_COMPLETE  1h ago Jobsite Generator (ImageVersion: 1.0.0) 
+
+Alternatively, go to AWS console and CloudFormation.
+
+Then, generate the new image and push it to Pier One:
 
     cd jobsite-generator-host
-    git pull
-    git submodule update
-    docker build -t pierone.stups.zalan.do/tfox/jobsite-generator:1.3 .
-    docker push pierone.stups.zalan.do/tfox/jobsite-generator:1.3
+    docker build -t pierone.stups.zalan.do/tfox/jobsite-generator:<new-img-version> .
+    docker push pierone.stups.zalan.do/tfox/jobsite-generator:<new-img-version>
 
 After a successful execution, you can check out the available versions by accessing
 https://pierone.stups.zalan.do/teams/tfox/artifacts/jobsite-generator/tags .
@@ -149,7 +206,7 @@ given time. Otherwise we might run into concurrency problems.
 Trying to delete is supposed to be always safe. If there is no existing stack, nothing
 happens.
 
-Run "senza delete jobsite-generator.yaml". Example:
+Run `senza delete jobsite-generator.yaml`. Example:
 
     $ senza delete jobsite-generator.yaml
     Deleting Cloud Formation stack jobsite-generator-41.. OK
@@ -170,12 +227,29 @@ a CloudFormation stack jobsite-generator-&lt;myapp-version> and use version
 You can follow the CloudFormation init events either in the web console, or on the command
 line by running `senza events test.yaml <myapp-version>`:
 
-    $ senza events tfox-jobsite.yaml 42 --watch=2
+    $ senza events jobsite-generator.yaml <myapp-version> --watch=2
 
 If creating fails and gets rolled back, then it might be that your Docker image version
 doesn't match one that has been deployed in Pier One. See
 https://pierone.stups.zalan.do/teams/tfox/artifacts/jobsite-generator/tags for a current
 list.
+
+You can execute 
+
+
+## Configure the load balancer to listen to plain HTTP in port 80
+
+In AWS console, EC2 => Load Balancers => jobsite-generator-&lt;your-version>
+=> Listeners => Edit => Add => HTTP, "Instance Port": 8080 and Save. Prismic
+webhook is currently configured to use the HTTP endpoint because we don't have a
+generally trusted SSL certificate for the domain.
+
+
+## Upload tech.jobsite-all.js manually to S3
+
+The build is currently broken regarding JavaScript minification/deployment. As
+a consequence, the minified tech.jobsite-all.js needs to be manually uploaded
+to tech.workplace.zalan.do/js/tech.zalando-all.js . 
 
 
 ## Check instance health
@@ -191,13 +265,9 @@ The jobsite-generator instance's "LB Status" should be IN_SERVICE.
 You can also check this in the AWS console: EC2 => jobsite-generator-&lt;your-version>
 => Instances should show one "InService" instance.
 
+http://jobsite-generator.workspace.zalan.do/healthcheck
 
-## Configure the load balancer to listen to plain HTTP in port 80
-
-In AWS console, EC2 => Load Balancers => jobsite-generator-&lt;your-version>
-=> Listeners => Edit => Add => HTTP, "Instance Port": 8080 and Save. Prismic
-webhook is currently configured to use the HTTP endpoint because we don't have a
-generally trusted SSL certificate for the domain.
+That's it!
 
 
 
