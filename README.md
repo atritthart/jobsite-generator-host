@@ -97,6 +97,32 @@ This is needed for Piu SSH access to EC2 instances.
 
 # Creating or updating the Jobsite Generator instance
 
+## Verfify that everything works
+
+Deploy to dev first to test:
+
+    cd static-site-gen
+    git checkout qa
+    git pull
+    ./node_modules/.bin/gulp deploy -e dev
+
+In http://zalando-tfox-dev.s3-website.eu-central-1.amazonaws.com/build/latest 
+check manually:
+
+* Front page
+* Job ads list
+* One individual job category
+* One individual job ad
+* Blog post list
+* One individual blog post
+* One location
+
+
+## Update QA branches for all submodules to point to latest
+
+TODO
+
+
 ## Create or update the Docker image to latest version
 
 The images need to be pushed to the Pier One Docker registry that is accessible from
@@ -105,6 +131,7 @@ Example for version 1.3:
 
     cd jobsite-generator-host
     git pull
+    git submodule update
     docker build -t pierone.stups.zalan.do/tfox/jobsite-generator:1.3 .
     docker push pierone.stups.zalan.do/tfox/jobsite-generator:1.3
 
@@ -151,7 +178,24 @@ list.
 
 ## Check instance health
 
-EC2 => Load Balancers => Instances should show one "InService" instance.
+Run `senza instances` to see the status:
+
+    $ senza instances
+    Stack Name       │Ver.│Resource ID│Instance ID│Public IP│Private IP   │State  │LB Status │Launched
+    jobsite-generator 42   AppServer   i-7990b7b7            172.31.141.36 RUNNING IN_SERVICE  26m ago 
+
+The jobsite-generator instance's "LB Status" should be IN_SERVICE.
+
+You can also check this in the AWS console: EC2 => jobsite-generator-&lt;your-version>
+=> Instances should show one "InService" instance.
+
+
+## Configure the load balancer to listen to plain HTTP in port 80
+
+In AWS console, EC2 => Load Balancers => jobsite-generator-&lt;your-version>
+=> Listeners => Edit => Add => HTTP, "Instance Port": 8080 and Save. Prismic
+webhook is currently configured to use the HTTP endpoint because we don't have a
+generally trusted SSL certificate for the domain.
 
 
 
@@ -288,7 +332,7 @@ Debug mode, to output requests on console:
 After building the Docker image, run app from docker container:
 
     docker run -e "PRISMIC_SECRET=<PRISMIC_SECRET>" -e "PRISMIC_APIURL=<PRIMSIC_API_URL>" \
-     -p 8080:8080 -i -t pierone.stups.zalan.do/tfox/jobsite-generator:1.3
+     -p 8080:8080 -i -t pierone.stups.zalan.do/tfox/jobsite-generator:<image-version>
 
 Exmaple:
 
