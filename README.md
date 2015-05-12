@@ -7,6 +7,8 @@ When updating contents on prismic.io, a webhook triggers a new build of the publ
 website through the integrated NodeJS application and corresponding gulp tasks.
 
 
+
+
 # First time development environment setup
 
 ## Ensure you have Python 3 installed
