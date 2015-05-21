@@ -3,6 +3,7 @@ FROM node:0.12
 RUN apt-get update
 RUN apt-get install -y ruby-full
 RUN apt-get install -y default-jre
+RUN apt-get install -y python-docutils
 RUN gem install scss-lint
 
 RUN mkdir -p /opt/tfox
