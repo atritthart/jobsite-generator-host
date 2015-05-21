@@ -350,6 +350,13 @@ For example:
 
 ## Debugging EC2 with SSH
 
+Figure out the EC2 instance's IP address with Senza
+
+Run:
+
+    piu --even-url https://even.stups.zalan.do --odd-host odd-eu-central-1.workplace.zalan.do \
+      --user <username> <internal-ip> <comment>
+
 Example:
 
     $ piu --even-url https://even.stups.zalan.do --odd-host odd-eu-central-1.workplace.zalan.do \
@@ -369,7 +376,9 @@ Now logging in with the ssh cmdline output by Piu should work:
 
     $ ssh -tA ekantola@odd-eu-central-1.workplace.zalan.do ssh ekantola@172.31.145.144
 
-The first place to start looking for errors would be `/var/log/syslog`.
+The first place to start looking for log messages would be `/var/log/syslog`
+since the Zalando AWS Docker setup is configured to output everything from
+containers to there (option ``).
 
 
 ## Zalando STUPS hints
