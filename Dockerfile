@@ -1,4 +1,4 @@
-FROM node:0.10
+FROM node:0.12
 
 RUN apt-get update
 RUN apt-get install -y ruby-full
