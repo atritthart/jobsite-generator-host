@@ -265,7 +265,7 @@ The jobsite-generator instance's "LB Status" should be IN_SERVICE.
 You can also check this in the AWS console: EC2 => jobsite-generator-&lt;your-version>
 => Instances should show one "InService" instance.
 
-http://jobsite-generator.workspace.zalan.do/healthcheck
+http://jobsite-generator.workplace.zalan.do/healthcheck
 
 That's it!
 
