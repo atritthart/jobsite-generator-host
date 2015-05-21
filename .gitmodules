@@ -4,6 +4,3 @@
 [submodule "metalsmith-greenhouse"]
 	path = metalsmith-greenhouse
 	url = git@code.futurice.com:zalando_tfox/metalsmith-greenhouse
-[submodule "swig-viewmodel"]
-	path = swig-viewmodel
-	url = git@code.futurice.com:zalando_tfox/swig-viewmodel.git
