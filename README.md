@@ -159,9 +159,9 @@ file accordingly.
 Then, commit submodule reference updates in the jobsite-generator-host project
 and merge to QA:
 
-    git add static-site-gen metalsmith-greenhouse swig-viewmodel
+    git add static-site-gen metalsmith-greenhouse
     git commit
-    git rebase qa
+    git merge qa
     git push origin develop
     git checkout qa
     git merge develop
