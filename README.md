@@ -213,18 +213,23 @@ After a successful execution, you can check out the available versions by access
 https://pierone.stups.zalan.do/teams/tfox/artifacts/jobsite-generator/tags .
 
 
-## Delete existing CloudFormation stack
+## Disable existing CloudFormation stack
 
 This is needed to ensure there isn't two simultaneous running website generators at a
 given time. Otherwise we might run into concurrency problems.
 
-Trying to delete is supposed to be always safe. If there is no existing stack, nothing
-happens.
+Currently, the only way for the jobsite generator to start deployment is by
+webhooks. Disallowing them will therefore disable all triggered deployments.
 
-Run `senza delete jobsite-generator.yaml`. Example:
+In AWS console, EC2 => Load Balancers => jobsite-generator-&lt;your-version>
+=> Listeners => Edit => remove everything (HTTP &amp; HTTPS) and Save.
 
-    $ senza delete jobsite-generator.yaml
-    Deleting Cloud Formation stack jobsite-generator-41.. OK
+TODO Later: also disable cronjob if/when we have that.
+
+If new stack deployment can't be done for a reason or another as per the
+following instructions, then you still have the possibility to re-enable
+listeners and fall back to the old stack. See below: "Rollback to old stack
+after a failed deployment".
 
 
 ## Create the CloudFormation stack with Senza
@@ -282,7 +287,38 @@ You can also check this in the AWS console: EC2 => jobsite-generator-&lt;your-ve
 
 http://jobsite-generator.workplace.zalan.do/healthcheck
 
+
+## Generate a new jobsite
+
+In Prismic.io settings, go to Webhooks and click the green "Trigger it" button.
+After that, you should see a succeeded attempt below in the "Recent deliveries"
+list after a small delay. If that happens, go to http://tech.workplace.zalan.do
+after a few minutes and verify that the new version's deployment took place and
+was successful.
+
+
+## Delete old CloudFormation stack
+
+Run `senza delete jobsite-generator.yaml <old-stack-version>`. Example:
+
+    $ senza delete jobsite-generator.yaml 41
+    Deleting Cloud Formation stack jobsite-generator-41.. OK
+
 That's it!
+
+
+## Rolling back an old CloudFormation stack
+
+1. To avoid concurrency problems, first make sure no other jobsite-generator
+   CloudFormation stacks are up and running. If there are, disallow access to
+   their webhooks to disable them.
+
+2. Re-enable HTTPS and HTTP listening, see "Configure the load balancer to
+   listen to plain HTTP in port 80".
+
+3. Ensure Route53 domain points to the old stack's load balancer.
+
+4. Test healthcheck and jobsite generation by triggering with Prismic webhook.
 
 
 
