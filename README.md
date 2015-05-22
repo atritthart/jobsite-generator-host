@@ -263,13 +263,6 @@ webhook is currently configured to use the HTTP endpoint because we don't have a
 generally trusted SSL certificate for the domain.
 
 
-## Upload tech.jobsite-all.js manually to S3
-
-The build is currently broken regarding JavaScript minification/deployment. As
-a consequence, the minified tech.jobsite-all.js needs to be manually uploaded
-to tech.workplace.zalan.do/js/tech.zalando-all.js . 
-
-
 ## Check instance health
 
 Run `senza instances` to see the status:
