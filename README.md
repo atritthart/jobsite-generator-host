@@ -168,9 +168,9 @@ and merge to QA:
     git push origin qa
 
 
-## Ensure you have the most recent Node.js 0.10 base image available
+## Ensure you have the most recent Node.js 0.12 base image available
 
-    docker pull node:0.10
+    docker pull node:0.12
 
 
 ## Create or update the Docker image to latest version
