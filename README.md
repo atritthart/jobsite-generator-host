@@ -232,29 +232,27 @@ listeners and fall back to the old stack. See below: "Rollback to old stack
 after a failed deployment".
 
 
-## Create the CloudFormation stack with Senza
+## Create a new CloudFormation stack with Senza
 
-Run `senza create jobsite-generator.yaml <myapp-version> <dockerimg-version>`, for example:
+Run `senza create jobsite-generator.yaml <stack-version> <dockerimg-version>`, for example:
 
     $ senza create jobsite-generator.yaml 42 1.3
     Generating Cloud Formation template.. OK
     Creating Cloud Formation stack jobsite-generator-42.. OK
 
-&lt;myapp-version> should be incremented on every deployment. This will create
-a CloudFormation stack jobsite-generator-&lt;myapp-version> and use version
+&lt;stack-version> should be incremented on every deployment. This will create
+a CloudFormation stack jobsite-generator-&lt;stack-version> and use version
 &lt;dockerimg-version> Docker image from Pier One.
 
-You can follow the CloudFormation init events either in the web console, or on the command
-line by running `senza events test.yaml <myapp-version>`:
+You can follow the CloudFormation init events either in the AWS web console, or
+on the command line by running `senza events test.yaml <stack-version>`:
 
-    $ senza events jobsite-generator.yaml <myapp-version> --watch=2
+    $ senza events jobsite-generator.yaml <stack-version> --watch=2
 
-If creating fails and gets rolled back, then it might be that your Docker image version
-doesn't match one that has been deployed in Pier One. See
-https://pierone.stups.zalan.do/teams/tfox/artifacts/jobsite-generator/tags for a current
-list.
-
-You can execute 
+If creating fails and gets rolled back, then it might be that your Docker
+image version doesn't match one that has been deployed to Pier One. See
+https://pierone.stups.zalan.do/teams/tfox/artifacts/jobsite-generator/tags
+for a current list.
 
 
 ## Configure the load balancer to listen to plain HTTP in port 80
