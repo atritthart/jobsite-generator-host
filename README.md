@@ -137,6 +137,8 @@ check manually:
 
 After tests pass, merge every changed submodule to QA:
 
+    git checkout develop
+    git pull --rebase
     git checkout qa
     git merge develop
     git push
