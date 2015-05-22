@@ -392,9 +392,14 @@ For example:
 
 ## Debugging EC2 with SSH
 
-Figure out the EC2 instance's IP address with Senza
+Figure out the EC2 instance's IP address with `senza instances`:
 
-Run:
+    $ senza instances
+    Stack Name       │Ver.│Resource ID│Instance ID│Public IP│Private IP   │State  │LB Status │Launched
+    jobsite-generator 15   AppServer   i-0d41facc            <internal-ip> RUNNING IN_SERVICE  10d ago
+
+
+Then run:
 
     piu --even-url https://even.stups.zalan.do --odd-host odd-eu-central-1.workplace.zalan.do \
       --user <username> <internal-ip> <comment>
