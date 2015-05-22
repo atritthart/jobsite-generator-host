@@ -110,20 +110,15 @@ This is needed for Piu SSH access to EC2 instances.
 
 Deploy to dev first to test:
 
-    cd swig-viewmodel
-    git checkout develop
-    git pull --rebase
-    git rebase qa
-
     cd metalsmith-greenhouse
     git checkout develop
     git pull --rebase
-    git rebase qa
+    git merge qa
 
     cd static-site-gen
     git checkout develop
     git pull --rebase
-    git rebase qa
+    git merge qa
     ./node_modules/.bin/gulp deploy -e dev
 
 In http://zalando-tfox-dev.s3-website.eu-central-1.amazonaws.com/build/latest 
