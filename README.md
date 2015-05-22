@@ -345,7 +345,7 @@ This has already been done, but documentation left here as a reference if needed
 
 ## S3 bucket setup
 
-1. Create a bucket with the name zalando-jobsite-<env> (<env>=dev/qa/prod)
+1. Create a bucket with the name zalando-jobsite-&lt;env> (&lt;env>=dev/qa/prod)
 2. Set bucket world-readable Properties => Permissions: "Add bucket policy" with content
 
         {
