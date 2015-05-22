@@ -7,7 +7,7 @@ RUN apt-get install -y python-docutils
 RUN gem install scss-lint
 
 RUN mkdir -p /opt/tfox
-RUN useradd --home-dir /opt/tfox/static-site-gen/build --no-create-home tfox
+RUN useradd --home-dir /opt/tfox/static-site-gen/build --no-create-home --uid 999 tfox
 
 ADD metalsmith-greenhouse/package.json /opt/tfox/metalsmith-greenhouse/
 ADD metalsmith-greenhouse/lib /opt/tfox/metalsmith-greenhouse/lib
