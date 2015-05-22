@@ -188,10 +188,25 @@ Description:
 
 Alternatively, go to AWS console and CloudFormation.
 
-Then, generate the new image and push it to Pier One:
+Then, generate the new image:
 
     cd jobsite-generator-host
     docker build -t pierone.stups.zalan.do/tfox/jobsite-generator:<new-img-version> .
+
+Test it by deploying to dev env:
+
+    docker run -i -t -e "PRISMIC_APIURL=https://zalando-jobsite.prismic.io/api" \
+     -e "PRISMIC_SECRET=foo" pierone.stups.zalan.do/tfox/jobsite-generator:<img-version> bash
+    ./node_modules/.bin/gulp deploy -e dev
+
+Normally, most of the file uploads to S3 should be getting skipped, in case
+you deployed properly from your development host. Some differences might arise
+in the rst2html version differences, though, so expect to have the old
+blog posts from RST source to get updated. (TODO How to fix version mismatch?)
+Test the affected pages once more manually after deploy.
+
+After everything works, push the image to Pier One:
+
     docker push pierone.stups.zalan.do/tfox/jobsite-generator:<new-img-version>
 
 After a successful execution, you can check out the available versions by accessing
