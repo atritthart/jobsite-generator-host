@@ -129,8 +129,11 @@ check manually:
 * One individual job category
 * One individual job ad
 * Blog post list
-* One individual blog post
+* One individual new-style blog post
+* One individual RST-source blog post
+* One individual MD-source blog post
 * One location
+* Relocation page
 
 After tests pass, merge every changed submodule to QA:
 
