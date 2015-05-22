@@ -141,7 +141,7 @@ After tests pass, merge every changed submodule to QA:
     git pull --rebase
     git checkout qa
     git merge develop
-    git push
+    git push origin qa
 
 
 ## Check out and update the superproject if needed
