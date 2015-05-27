@@ -1,4 +1,5 @@
 metalsmith-greenhouse/node_modules
+static-site-gen/node_modules
 static-site-gen/lib/*/node_modules
 static-site-gen/log
 statis-site-gen/git
