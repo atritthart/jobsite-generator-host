@@ -153,8 +153,8 @@ Make sure your Senza YAML configuration is up to date:
 
     diff jobsite-generator.default.yaml jobsite-generator.yaml
 
-If there are other differences than the S3 credentials, update your config
-file accordingly.
+If there are other differences than the Prismic API credentials (SECRET, APIURL)
+update your config file accordingly.
 
 Then, commit submodule reference updates in the jobsite-generator-host project
 and merge to QA:
