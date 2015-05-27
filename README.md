@@ -222,10 +222,12 @@ This is needed to ensure there isn't two simultaneous running website generators
 given time. Otherwise we might run into concurrency problems.
 
 Currently, the only way for the jobsite generator to start deployment is by
-webhooks. Disallowing them will therefore disable all triggered deployments.
+webhooks. Disabling them will therefore disable all triggered deployments.
 
 In AWS console, EC2 => Load Balancers => jobsite-generator-&lt;your-version>
-=> Listeners => Edit => remove everything (HTTP &amp; HTTPS) and Save.
+=> Listeners => Edit => remove the HTTP listener and change HTTPS listener's
+instance ports to a port to 8888 (or any other port the application is not
+listening on) and Save.
 
 TODO Later: also disable cronjob if/when we have that.
 
@@ -276,8 +278,8 @@ Run `senza instances` to see the status:
 
 The jobsite-generator instance's "LB Status" should be IN_SERVICE.
 
-You can also check this in the AWS console: EC2 => jobsite-generator-&lt;your-version>
-=> Instances should show one "InService" instance.
+You can also check this in the AWS console: EC2 => Load Balancers =>
+jobsite-generator-&lt;your-version> => Instances should show one "InService" instance.
 
 http://jobsite-generator.workplace.zalan.do/healthcheck
 
