@@ -74,7 +74,7 @@ will also be used later in this documentation.
     $ mai create aws-tfox-jobsite
     Identity provider URL: aws.zalando.net
     SAML username: eemeli.kantola.extern@zalando.de
-    Please enter your SAML password: 
+    Please enter your SAML password:
     Authenticating against https://aws.zalando.net.. OK
     Storing new profile in /Users/ekan/Library/Application Support/mai/mai.yaml.. OK
 
@@ -121,7 +121,7 @@ Deploy to dev first to test:
     git merge qa
     ./node_modules/.bin/gulp deploy -e dev
 
-In http://zalando-tfox-dev.s3-website.eu-central-1.amazonaws.com/build/latest 
+In http://zalando-tfox-dev.s3-website.eu-central-1.amazonaws.com/build/latest
 check manually:
 
 * Front page
@@ -183,8 +183,8 @@ image version by running `senza list` and checking the ImageVersion in
 Description:
 
     $ senza list
-    Stack Name       │Ver.│Status         │Created│Description                            
-    jobsite-generator 13   CREATE_COMPLETE  1h ago Jobsite Generator (ImageVersion: 1.0.0) 
+    Stack Name       │Ver.│Status         │Created│Description
+    jobsite-generator 13   CREATE_COMPLETE  1h ago Jobsite Generator (ImageVersion: 1.0.0)
 
 Alternatively, go to AWS console and CloudFormation.
 
@@ -269,7 +269,7 @@ Run `senza instances` to see the status:
 
     $ senza instances
     Stack Name       │Ver.│Resource ID│Instance ID│Public IP│Private IP   │State  │LB Status │Launched
-    jobsite-generator 42   AppServer   i-7990b7b7            172.31.141.36 RUNNING IN_SERVICE  26m ago 
+    jobsite-generator 42   AppServer   i-7990b7b7            172.31.141.36 RUNNING IN_SERVICE  26m ago
 
 The jobsite-generator instance's "LB Status" should be IN_SERVICE.
 
@@ -331,13 +331,13 @@ This has already been done, but documentation left here as a reference if needed
     Please select (1-2): 2
     Application ID [hello-world]: jobsite-generator
     Docker image [stups/hello-world]: tfox/jobsite-generator
-    HTTP port [8080]: 
-    HTTP health check path [/]: 
-    EC2 instance type [t2.micro]: 
+    HTTP port [8080]:
+    HTTP health check path [/]:
+    EC2 instance type [t2.micro]:
     Checking security group app-hello-world.. OK
-    Security group app-hello-world does not exist. Do you want Senza to create it now? [Y/n]: 
+    Security group app-hello-world does not exist. Do you want Senza to create it now? [Y/n]:
     Checking security group app-hello-world-lb.. OK
-    Security group app-hello-world-lb does not exist. Do you want Senza to create it now? [Y/n]: 
+    Security group app-hello-world-lb does not exist. Do you want Senza to create it now? [Y/n]:
     Creating IAM role app-hello-world.. OK
     Generating Senza definition file test.yaml.. OK
 
@@ -408,7 +408,7 @@ Example:
 
     $ piu --even-url https://even.stups.zalan.do --odd-host odd-eu-central-1.workplace.zalan.do \
       --user ekantola 172.31.145.144 "Just testing around"
-    Password: 
+    Password:
     Requesting access to host 172.31.145.144 via odd-eu-central-1.workplace.zalan.do for ekantola..
     Access to host odd-eu-central-1.workplace.zalan.do/52.28.48.168 for user ekantola was granted.
     You can now access your server with the following command:
