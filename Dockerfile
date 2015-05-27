@@ -4,6 +4,7 @@ RUN apt-get update
 RUN apt-get install -y ruby-full
 RUN apt-get install -y default-jre
 RUN apt-get install -y python-docutils
+RUN apt-get install -y python-markdown
 RUN gem install scss-lint
 
 RUN mkdir -p /opt/tfox
