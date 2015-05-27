@@ -212,6 +212,9 @@ After everything works, push the image to Pier One:
 After a successful execution, you can check out the available versions by accessing
 https://pierone.stups.zalan.do/teams/tfox/artifacts/jobsite-generator/tags .
 
+Create a git tag, reflecting the new docker image version:
+    git tag docker-image-<new-img-version>
+
 
 ## Disable existing CloudFormation stack
 
