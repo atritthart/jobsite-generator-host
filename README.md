@@ -51,11 +51,23 @@ https://access.zalando.net .
 Note: a re-login is needed every two hours.
 
 
-## Install the required Zalando AWS tools
+## Install and configure the required Zalando AWS tools
 
-- Mai: AWS credentials, http://stups.readthedocs.org/en/latest/components/mai.html
-- Senza: CloudFormation management, http://stups.readthedocs.org/en/latest/components/senza.html
-- Piu: SSH to EC2, http://stups.readthedocs.org/en/latest/components/piu.html
+Stups metapackage (https://pypi.python.org/pypi/stups) includes everything that
+is needed:
+
+    sudo pip3 install --upgrade stups
+
+For PierOne Docker registry, do a first-time login and configure:
+
+    $ pierone login
+    Please enter the Pier One URL: https://pierone.stups.zalan.do 
+    Getting OAuth2 token "pierone"..
+    Please enter the OAuth access token service URL: https://token.auth.zalando.com/access_token
+    Password:
+
+The configuration is stored under "~/Library/Application Support/pierone" for
+later (on OSX).
 
 For Senza, you also might want to configure the AWS region in order to avoid
 having to give a `--region=eu-central-1` on every run. Edit `~/.aws/config` and
