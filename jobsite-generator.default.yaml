@@ -24,7 +24,7 @@ SenzaComponents:
       ElasticLoadBalancer: AppLoadBalancer
       TaupageConfig:
         runtime: Docker
-        source: "pierone.stups.zalan.do/tfox/jobsite-generator:{{Arguments.ImageVersion}}"
+        source: "pierone.stups.zalan.do/workplace/jobsite-generator:{{Arguments.ImageVersion}}"
         environment:
           TFOX_ENV: qa
           S3BUCKET_QA: "tech.workplace.zalan.do"
@@ -37,9 +37,7 @@ SenzaComponents:
           HOME: "/opt/tfox/static-site-gen/build"
         ports:
           8080: 8080
-        # the following fixes /opt/zalando/init.sh getting stuck forever in:
-        # "Waiting for berry to download OAuth credentials to /meta/credentials/user.json"
-        token_service_url: ""
+        mint_bucket: zalando-stups-mint-067144859345-eu-west-1
 
   # creates an ELB entry and Route53 domains to this ELB
   - AppLoadBalancer:

@@ -68,10 +68,10 @@ add the region :
 ## Create a new AWS identity
 
 Log in with your email address (firstname.lastname.extern@zalando.de). The profile name
-is arbitrary (local only), but a good guess would be for example "aws-tfox-jobsite" which
+is arbitrary (local only), but a good guess would be for example "aws-jobsite" which
 will also be used later in this documentation.
 
-    $ mai create aws-tfox-jobsite
+    $ mai create aws-jobsite
     Identity provider URL: aws.zalando.net
     SAML username: eemeli.kantola.extern@zalando.de
     Please enter your SAML password:
@@ -83,7 +83,7 @@ will also be used later in this documentation.
 
 Create temporary credentials:
 
-    $ mai login aws-tfox-jobsite
+    $ mai login aws-jobsite
     Authenticating against https://aws.zalando.net.. OK
     Assuming role AWS Account 067144859345 (None): Shibboleth-PowerUser.. OK
     Writing temporary AWS credentials.. OK
@@ -191,12 +191,12 @@ Alternatively, go to AWS console and CloudFormation.
 Then, generate the new image:
 
     cd jobsite-generator-host
-    docker build -t pierone.stups.zalan.do/tfox/jobsite-generator:<new-img-version> .
+    docker build -t pierone.stups.zalan.do/workplace/jobsite-generator:<new-img-version> .
 
 Test it by deploying to dev env:
 
     docker run -i -t -e "PRISMIC_APIURL=https://zalando-jobsite.prismic.io/api" \
-     -e "PRISMIC_SECRET=foo" pierone.stups.zalan.do/tfox/jobsite-generator:<img-version> bash
+     -e "PRISMIC_SECRET=foo" pierone.stups.zalan.do/workplace/jobsite-generator:<img-version> bash
     ./node_modules/.bin/gulp deploy -e dev
 
 Normally, most of the file uploads to S3 should be getting skipped, in case
@@ -207,13 +207,16 @@ Test the affected pages once more manually after deploy.
 
 After everything works, push the image to Pier One:
 
-    docker push pierone.stups.zalan.do/tfox/jobsite-generator:<new-img-version>
+    pierone login -U <shortusername>
+    docker push pierone.stups.zalan.do/workplace/jobsite-generator:<new-img-version>
 
-After a successful execution, you can check out the available versions by accessing
-https://pierone.stups.zalan.do/teams/tfox/artifacts/jobsite-generator/tags .
+After a successful execution, check out the available versions by:
 
-Create a git tag, reflecting the new docker image version:
-    git tag docker-image-<new-img-version>
+    pierone tags workplace
+
+Finally, create a git tag, reflecting the new docker image version:
+
+    git tag docker-image-<new-img-tag>
 
 
 ## Disable existing CloudFormation stack
@@ -256,7 +259,7 @@ on the command line by running `senza events test.yaml <stack-version>`:
 
 If creating fails and gets rolled back, then it might be that your Docker
 image version doesn't match one that has been deployed to Pier One. See
-https://pierone.stups.zalan.do/teams/tfox/artifacts/jobsite-generator/tags
+https://pierone.stups.zalan.do/teams/workplace/artifacts/jobsite-generator/tags
 for a current list.
 
 
@@ -335,7 +338,7 @@ This has already been done, but documentation left here as a reference if needed
     2) webapp: HTTP app with auto scaling, ELB and DNS
     Please select (1-2): 2
     Application ID [hello-world]: jobsite-generator
-    Docker image [stups/hello-world]: tfox/jobsite-generator
+    Docker image [stups/hello-world]: workplace/jobsite-generator
     HTTP port [8080]:
     HTTP health check path [/]:
     EC2 instance type [t2.micro]:
@@ -465,12 +468,12 @@ Debug mode, to output requests on console:
 After building the Docker image, run app from docker container:
 
     docker run -e "PRISMIC_SECRET=<PRISMIC_SECRET>" -e "PRISMIC_APIURL=<PRIMSIC_API_URL>" \
-     -p 8080:8080 -i -t pierone.stups.zalan.do/tfox/jobsite-generator:<image-version>
+     -p 8080:8080 -i -t pierone.stups.zalan.do/workplace/jobsite-generator:<image-version>
 
 Exmaple:
 
     docker run -e PRISMIC_SECRET=1234 -e PRISMIC_APIURL=https://zalando-jobsite.prismic.io/api \
-     -p 8080:8080 -i -t pierone.stups.zalan.do/tfox/jobsite-generator:1.3
+     -p 8080:8080 -i -t pierone.stups.zalan.do/workplace/jobsite-generator:1.3
 
 The environment variables used by the node application need to be passed via
 the `-e` parameter of `docker run`. For production AWS, the values are taken from
