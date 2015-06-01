@@ -18,6 +18,8 @@ RUN install -d -m 777 -o tfox /opt/tfox/static-site-gen/build /opt/tfox/static-s
 ADD static-site-gen /opt/tfox/static-site-gen/
 RUN cd /opt/tfox/static-site-gen/lib/swig-viewmodel && npm install
 RUN cd /opt/tfox/static-site-gen/lib/metalsmith-prismic && npm install
+RUN cd /opt/tfox/static-site-gen/lib/metalsmith-greenhouse-imgurl && npm install
+RUN cd /opt/tfox/static-site-gen/lib/imgurl-reprocessor && npm install
 RUN cd /opt/tfox/static-site-gen && npm install
 
 EXPOSE 8080
