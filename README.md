@@ -254,9 +254,10 @@ after a failed deployment".
 
 ## Create a new CloudFormation stack with Senza
 
-Run `senza create jobsite-generator.yaml <stack-version> <dockerimg-version>`, for example:
+Run `senza create jobsite-generator.yaml <stack-version> <docker-version> <env>`,
+for example:
 
-    $ senza create jobsite-generator.yaml 42 1.3
+    $ senza create jobsite-generator.yaml 42 1.3 qa
     Generating Cloud Formation template.. OK
     Creating Cloud Formation stack jobsite-generator-42.. OK
 
@@ -407,7 +408,7 @@ Use the "--disable-rollback" switch when deploying:
 
 For example:
 
-    $ senza create --disable-rollback jobsite-generator.yaml 42 1.3
+    $ senza create --disable-rollback jobsite-generator.yaml 42 1.3 qa
 
 
 ## Debugging EC2 with SSH
