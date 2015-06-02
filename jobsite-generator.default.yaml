@@ -37,6 +37,7 @@ SenzaComponents:
           HOME: "/opt/tfox/static-site-gen/build"
         ports:
           8080: 8080
+        region: "eu-west-1"
         mint_bucket: zalando-stups-mint-067144859345-eu-west-1
 
   # creates an ELB entry and Route53 domains to this ELB
