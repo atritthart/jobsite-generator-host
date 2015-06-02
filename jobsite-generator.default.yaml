@@ -27,12 +27,9 @@ SenzaComponents:
         source: "pierone.stups.zalan.do/workplace/jobsite-generator:{{Arguments.ImageVersion}}"
         environment:
           TFOX_ENV: qa
-          S3BUCKET_QA: "tech.workplace.zalan.do"
-          S3REGION_QA: "eu-central-1"
           JOBSITE_DEPLOY_SCHEDULED: true
           PRISMIC_SECRET: "<TODO-FILL-IN>"
           PRISMIC_APIURL: "<TODO-FILL-IN>"
-          GATRACKINGID_QA: "UA-5362052-33"
           # workaround for https://github.com/tkellen/js-v8flags/issues/17
           HOME: "/opt/tfox/static-site-gen/build"
         ports:
