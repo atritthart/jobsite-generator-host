@@ -1,4 +1,4 @@
-jobsite-generator.yaml
+jobsite-generator-*.yaml
 
 # Elastic Beanstalk Files
 .elasticbeanstalk/*

@@ -1,12 +1,10 @@
 
 # basic information for generating and executing this definition
 SenzaInfo:
-  StackName: jobsite-generator
+  StackName: jobsite-generator<TODO-POSSIBLE-ENV-PREFIX>
   Parameters:
     - ImageVersion:
         Description: "Docker image version of jobsite-generator."
-    - Environment:
-        Description: "Environment to deploy to (dev|qa|prod)."
 
 # a list of senza components to apply to the definition
 SenzaComponents:
@@ -28,7 +26,7 @@ SenzaComponents:
         runtime: Docker
         source: "pierone.stups.zalan.do/workplace/jobsite-generator:{{Arguments.ImageVersion}}"
         environment:
-          TFOX_ENV: {{Arguments.Environment}}
+          TFOX_ENV: <TODO-FILL-IN>
           JOBSITE_DEPLOY_SCHEDULED: true
           PRISMIC_SECRET: "<TODO-FILL-IN>"
           PRISMIC_APIURL: "<TODO-FILL-IN>"
