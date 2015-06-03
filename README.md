@@ -303,6 +303,9 @@ http://jobsite-generator.workplace.zalan.do/healthcheck
 
 ## Generate a new jobsite
 
+There's two options: wait for about 30 minutes for the scheduled build to kick
+in, or trigger build manually right away with the help of Prismic webhooks.
+
 In Prismic.io settings, go to Webhooks and click the green "Trigger it" button.
 After that, you should see a succeeded attempt below in the "Recent deliveries"
 list after a small delay. If that happens, go to http://tech.workplace.zalan.do
