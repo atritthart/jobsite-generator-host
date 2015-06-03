@@ -207,9 +207,9 @@ Then, generate the new image:
 
 Test it by deploying to dev env:
 
-    docker run -i -t -e "PRISMIC_APIURL=https://zalando-jobsite.prismic.io/api" \
-     -e "PRISMIC_SECRET=foo" pierone.stups.zalan.do/workplace/jobsite-generator:<img-version> \
-    ./node_modules/.bin/gulp deploy -e dev
+    docker run -i -t \
+     pierone.stups.zalan.do/workplace/jobsite-generator:<img-version> \
+     ./node_modules/.bin/gulp deploy -e dev
 
 Normally, most of the file uploads to S3 should be getting skipped, in case
 you deployed properly from your development host. Some differences might arise
