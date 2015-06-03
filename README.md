@@ -229,6 +229,7 @@ After a successful execution, check out the available versions by:
 Finally, create a git tag, reflecting the new docker image version:
 
     git tag docker-image-<new-img-tag>
+    git push --tags
 
 
 ## Disable existing CloudFormation stack
