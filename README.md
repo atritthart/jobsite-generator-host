@@ -315,7 +315,8 @@ was successful.
 
 ## Delete old CloudFormation stack
 
-Run `senza delete jobsite-generator.yaml <old-stack-version>`. Example:
+Do this from the AWS web console, or from command line by running
+`senza delete jobsite-generator.yaml <old-stack-version>`. Example:
 
     $ senza delete jobsite-generator.yaml 41
     Deleting Cloud Formation stack jobsite-generator-41.. OK
