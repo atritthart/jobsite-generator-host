@@ -1,0 +1,9 @@
+{
+  "name": "jobsite-generator-host",
+  "private": true,
+  "dependencies": {
+    "body-parser": "^1.12.3",
+    "express": "^4.12.3"
+  },
+  "engine": "node 0.12.2"
+}
