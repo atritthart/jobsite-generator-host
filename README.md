@@ -280,7 +280,7 @@ old container (see "Rolling back an old CloudFormation stack" below).
 
 ## Create a new CloudFormation stack with Senza
 
-Run `senza create jobsite-generator-<env>.yaml <stack-version> <docker-version> <env>`,
+Run `senza create jobsite-generator-<env>.yaml <stack-version> <docker-version>`,
 for example:
 
     $ senza create jobsite-generator-qa.yaml 42 1.3
