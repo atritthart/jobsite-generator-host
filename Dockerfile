@@ -15,7 +15,7 @@ RUN cd /opt/workplace && npm install
 
 RUN install -d -m 777 -o workplace /opt/workplace/metalsmith-greenhouse
 RUN install -d -m 777 -o workplace /opt/workplace/static-site-gen
-ADD static-site-gen/config-*.js /opt/workplace/static-site-gen/
+ADD config-*.js /opt/workplace/static-site-gen/
 
 USER workplace
 RUN cd /opt/workplace/metalsmith-greenhouse && git init && git remote add origin https://github.com/zalando/metalsmith-greenhouse.git
