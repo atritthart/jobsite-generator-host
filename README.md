@@ -313,7 +313,7 @@ webhook is currently configured to use the HTTP endpoint because we don't have a
 generally trusted SSL certificate for the domain.
 
 
-## Check instance health
+## Check instance health after 5-10 minutes
 
 Run `senza instances` to see the status:
 
