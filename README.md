@@ -140,6 +140,10 @@ Deploy to dev first to test:
     git merge qa
     ./node_modules/.bin/gulp deploy -e dev
 
+Note: rst2html does not necessarily produce same output or even work well
+with a local build, so for RST blog posts, you need to test build from the real
+Docker container.
+
 In http://zalando-tfox-dev.s3-website.eu-central-1.amazonaws.com/build/latest
 check manually:
 
@@ -163,23 +167,22 @@ After tests pass, merge every changed submodule to QA:
     git push origin qa
 
 
-## Check out and update the superproject if needed
+## Check out and update the generator host if needed
 
     cd jobsite-generator-host
     git checkout develop
 
 Make sure your Senza YAML configuration is up to date:
 
-    diff jobsite-generator.default.yaml jobsite-generator.yaml
+    diff jobsite-generator.default.yaml jobsite-generator-qa.yaml
+    diff jobsite-generator.default.yaml jobsite-generator-prod.yaml
 
 If there are other differences than the Prismic API credentials (SECRET, APIURL)
-update your config file accordingly.
+update your config files accordingly.
 
 Then, commit submodule reference updates in the jobsite-generator-host project
 and merge to QA:
 
-    git add static-site-gen metalsmith-greenhouse
-    git commit
     git merge qa
     git push origin develop
     git checkout qa
