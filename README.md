@@ -382,7 +382,7 @@ This has already been done, but documentation left here as a reference if needed
     $ senza --version
     Senza 0.29
 
-    $ senza init jobsite-generator.yaml
+    $ senza init jobsite-generator.default.yaml
     Please select the project template
     1) bgapp: Background app with single EC2 instance
     2) webapp: HTTP app with auto scaling, ELB and DNS
