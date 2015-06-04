@@ -124,7 +124,8 @@ function startDeploy() {
 }
 
 function codeUpdate() {
-    var gitUpdate = exec(
+    var updateProcStartTime = Date.now();
+    var updateProc = exec(
         'git fetch origin ' + BRANCH + ' && ' +
         'git checkout ' + BRANCH + ' && ' +
         'git reset --hard origin/' + BRANCH + ' && ' +
@@ -138,8 +139,8 @@ function codeUpdate() {
         timeout: 10*60*1000  // 10 mins
     });
 
-    gitUpdate.on('exit', function(code, signal) {
-        var runtimeSec = parseInt((Date.now() - deployProcessStartTime) / 1000, 10) + 's';
+    updateProc.on('exit', function(code, signal) {
+        var runtimeSec = parseInt((Date.now() - updateProcStartTime) / 1000, 10) + 's';
         if (code === 0) {
             debug('Code update for', ENV, 'succeeded in', runtimeSec);
             startDeploy();
@@ -150,9 +151,9 @@ function codeUpdate() {
         }
     });
 
-    gitUpdate.stderr.on('data', logDataLine);
+    updateProc.stderr.on('data', logDataLine);
     if (DEBUG) {
-        gitUpdate.stdout.on('data', logDataLine);
+        updateProc.stdout.on('data', logDataLine);
     }
 }
 
