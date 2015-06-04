@@ -7,23 +7,21 @@ RUN apt-get install -y python-docutils
 RUN apt-get install -y python-markdown
 RUN gem install scss-lint
 
-RUN mkdir -p /opt/tfox
-RUN useradd --home-dir /opt/tfox/static-site-gen/build --no-create-home --uid 999 tfox
+RUN mkdir -p /opt/workplace
+RUN useradd --home-dir /opt/workplace/static-site-gen/build --no-create-home --uid 999 workplace
 
-ADD metalsmith-greenhouse /opt/tfox/metalsmith-greenhouse/
-RUN cd /opt/tfox/metalsmith-greenhouse && npm install
+ADD server.js package.json code-update.sh README.md /opt/workplace/
+RUN cd /opt/workplace && npm install
 
-RUN install -d -m 777 -o tfox /opt/tfox/static-site-gen/build /opt/tfox/static-site-gen/dist /opt/tfox/static-site-gen/log
+RUN install -d -m 777 -o workplace /opt/workplace/metalsmith-greenhouse
+RUN install -d -m 777 -o workplace /opt/workplace/static-site-gen
+ADD static-site-gen/config-*.js /opt/workplace/static-site-gen/
 
-ADD static-site-gen /opt/tfox/static-site-gen/
-RUN cd /opt/tfox/static-site-gen/lib/swig-viewmodel && npm install
-RUN cd /opt/tfox/static-site-gen/lib/metalsmith-prismic && npm install
-RUN cd /opt/tfox/static-site-gen/lib/metalsmith-greenhouse-imgurl && npm install
-RUN cd /opt/tfox/static-site-gen/lib/imgurl-reprocessor && npm install
-RUN cd /opt/tfox/static-site-gen && npm install
+USER workplace
+RUN cd /opt/workplace/metalsmith-greenhouse && git init && git remote add origin https://github.com/zalando/metalsmith-greenhouse.git
+RUN cd /opt/workplace/static-site-gen && git init && git remote add origin https://github.com/zalando/jobsite-static-gen.git
 
 EXPOSE 8080
 
-USER tfox
-WORKDIR /opt/tfox/static-site-gen
+WORKDIR /opt/workplace
 CMD ["node", "server.js"]
