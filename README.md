@@ -215,11 +215,23 @@ Then, generate the new image:
     cd jobsite-generator-host
     docker build -t pierone.stups.zalan.do/workplace/jobsite-generator:<new-img-version> .
 
-Test it by deploying to dev env:
+Test it by deploying to dev env. First init container:
 
     docker run -i -t \
      pierone.stups.zalan.do/workplace/jobsite-generator:<img-version> \
-     ./node_modules/.bin/gulp deploy -e dev
+     bash code-update.sh develop
+
+Since Git cloning takes some time, commit the container into an image that can
+be reused if need be:
+
+    docker ps -a
+    # Copy the latest container id
+    docker commit <latest-container-id> jobsite-generator-test:<img-version>
+
+Then deploy:
+
+    docker run -i -t jobsite-generator-test:<img-version> \
+     ./node_modules/.bin/gulp -e dev deploy
 
 Normally, most of the file uploads to S3 should be getting skipped, in case
 you deployed properly from your development host. Some differences might arise
