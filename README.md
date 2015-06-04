@@ -350,14 +350,15 @@ That's it!
 ## Rolling back an old CloudFormation stack
 
 1. To avoid concurrency problems, first make sure no other jobsite-generator
-   CloudFormation stacks are up and running. If there are, disallow access to
-   their webhooks to disable them.
+   CloudFormation stacks are up and running. If there are, delete stack, or at
+   if you need to debug later, disable for now (see
+   "Disable existing CloudFormation stack" above).
 
 2. Ensure Route53 domain points to the old stack's load balancer.
 
-3. Unpause the Docker container with `docker unpause`.
+3. Unpause the old Docker container with `docker unpause`.
 
-4. Switch the Auto Scaling Group healthcheck type back to "ELB".
+4. Switch the old stack's Auto Scaling Group healthcheck type back to "ELB".
 
 5. Test healthcheck and jobsite generation by triggering with Prismic webhook.
 
