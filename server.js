@@ -130,7 +130,7 @@ function codeUpdateAndDeploy() {
     debug('Starting code update for', ENV);
 
     var updateProcStartTime = Date.now();
-    var updateProc = exec('bash code-update.sh ' + BRANCH, {
+    var updateProc = exec('bash /opt/workplace/code-update.sh ' + BRANCH, {
         timeout: 10*60*1000  // 10 mins
     });
 
