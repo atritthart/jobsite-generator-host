@@ -34,7 +34,7 @@ var app    = module.exports = express();
 var deployProcess = null;
 var deployProcessStartTime = null;
 
-process.chdir('static-site-gen');
+process.chdir('/opt/workplace/static-site-gen');
 debug('Debug logging enabled');
 
 // scheduled update of the site, to work around Greenhouse's limited webhooks
