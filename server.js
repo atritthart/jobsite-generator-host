@@ -146,9 +146,6 @@ function codeUpdate() {
     }
 }
 
-// TODO add hook for app upgrade via Gitlab webhook
-// app.use('/gitlab-hook', function (req, res, next) {});
-
 // handling non-matching routes
 app.use(function(req, res, next) {
     res.sendStatus(404);
