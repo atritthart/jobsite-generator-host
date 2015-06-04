@@ -16,27 +16,34 @@ website through the integrated NodeJS application and corresponding gulp tasks.
 For example, Mac OS X & Homebrew: `brew install python3`
 
 
-## Clone this project and pull in submodules
-
-The jobsite-generator-host repository also includes the other three repos as git submodules,
-so the first time after cloning you need to init and update them. Example:
+## Clone projects
 
     git clone git@github.com:zalando/jobsite-generator-host.git
-    git checkout develop
-    git submodule init
-    git submodule update
+    git clone git@github.com:zalando/jobsite-static-gen.git
+    git clone git@github.com:zalando/metalsmith-greenhouse.git
 
-This will clone static-site-gen, metalsmith-greenhouse and swig-viewmodel into subdirectories.
+Configure server:
+
+    cp jobsite-static-gen/config.default.js jobsite-generator-host/config-dev.js
+    cp jobsite-static-gen/config.default.js jobsite-generator-host/config-qa.js
+    cp jobsite-static-gen/config.default.js jobsite-generator-host/config-prod.js
+
+Then fill in relevant values.
+
+For deploying locally to dev, you may want to:
+
+    ln -s ../jobsite-generator-host/config-dev.js jobsite-static-gen/
 
 
 ## Configure jobsite-generator-host
 
-Copy conf template to a local one:
+Copy conf template to a local ones:
 
-    cp jobsite-generator.default.yaml jobsite-generator.yaml
+    cp jobsite-generator.default.yaml jobsite-generator-qa.yaml
+    cp jobsite-generator.default.yaml jobsite-generator-prod.yaml
 
-Then fill in the "PRISMIC_" secrets. you can retrieve the values from the prismic.io config
-pages ("API&Security" and "Webhooks").
+Then fill in the "TODO" values. You can retrieve Prismic secrets from the
+prismic.io config pages ("API&Security" => "Webhooks").
 
 
 ## Verify you are able to log into the AWS account
