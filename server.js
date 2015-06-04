@@ -85,9 +85,13 @@ app.post('/github-hook', function (req, res, next) {
 
     if (type === 'ping') {
         res.send('OK');
-    } else if (type === 'push' && req.body.ref === 'refs/heads/' + BRANCH) {
-        codeUpdateAndDeploy();
-        res.status(202).json({ status: 'Code update and deployment started' });
+    } else if (type === 'push') {
+        if (req.body.ref === 'refs/heads/' + BRANCH) {
+            codeUpdateAndDeploy();
+            res.status(202).json({ status: 'Code update and deployment started' });
+        } else {
+            res.send('OK');
+        }
     } else {
         res.status(400);
         next(new Error('Invalid request'));
