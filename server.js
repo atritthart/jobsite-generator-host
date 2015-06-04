@@ -83,7 +83,9 @@ app.post('/github-hook', function (req, res, next) {
 
     var type = req.get('X-Github-Event');
 
-    if (type === 'push' && req.body.ref === 'refs/heads/' + BRANCH) {
+    if (type === 'ping') {
+        res.send('OK');
+    } else if (type === 'push' && req.body.ref === 'refs/heads/' + BRANCH) {
         codeUpdateAndDeploy();
         res.status(202).json({ status: 'Code update and deployment started' });
     } else {
