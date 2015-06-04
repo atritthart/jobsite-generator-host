@@ -424,6 +424,18 @@ point to the generator webhook URL (e.g. https://my.domain.name/prismic-hook)
 activate the webhook.
 
 
+## Github webhooks setup
+
+https://github.com/zalando/jobsite-static-gen/settings/hooks and there, add
+hooks for QA and PROD payload URLs with default settings:
+
+* http://jobsite-generator-qa.workplace.zalan.do/github-hook
+* http://jobsite-generator.workplace.zalan.do/github-hook
+
+Whenever a branch (qa or master) is updated, a code update followed by a deploy
+is triggered in jobsite generator.
+
+
 
 
 # Troubleshooting
