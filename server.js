@@ -125,7 +125,7 @@ function startDeploy() {
 
 function codeUpdate() {
     var updateProcStartTime = Date.now();
-    var updateProc = exec('bash code-update.sh', {
+    var updateProc = exec('bash code-update.sh ' + BRANCH, {
         timeout: 10*60*1000  // 10 mins
     });
 
