@@ -45,6 +45,8 @@ if (DEPLOY_SCHEDULED) {
     debug('Scheduled deployment disabled');
 }
 
+setTimeout(codeUpdateAndDeploy, 0);
+
 // parse json on all requests
 app.use(bodyParser.json());
 
@@ -82,7 +84,7 @@ app.post('/github-hook', function (req, res, next) {
     var type = req.get('X-Github-Event');
 
     if (type === 'push' && req.body.ref === 'refs/heads/' + BRANCH) {
-        codeUpdate();
+        codeUpdateAndDeploy();
         res.status(202).json({ status: 'Code update and deployment started' });
     } else {
         res.status(400);
@@ -122,7 +124,9 @@ function startDeploy() {
     return true;
 }
 
-function codeUpdate() {
+function codeUpdateAndDeploy() {
+    debug('Starting code update for', ENV);
+
     var updateProcStartTime = Date.now();
     var updateProc = exec('bash code-update.sh ' + BRANCH, {
         timeout: 10*60*1000  // 10 mins
