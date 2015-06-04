@@ -264,7 +264,9 @@ given time. Otherwise we might run into concurrency problems.
    how to get access.
 
 3. Just in case, verify there's nothing interesting in the logs by examining
-   `/var/log/syslog`.
+   `/var/log/syslog`:
+
+        grep -ev '(berry: INFO|dhclient|CRON)' /var/log/syslog |less
 
 4. Pause the docker container by `docker pause` after determining its container
    id. Example:
