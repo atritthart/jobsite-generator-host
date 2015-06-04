@@ -80,9 +80,8 @@ app.post('/github-hook', function (req, res, next) {
     }
 
     var type = req.get('X-Github-Event');
-    var branch = BRANCH_FOR_ENV[ENV];
 
-    if (type === 'push' && req.body.ref === 'refs/heads/' + branch) {
+    if (type === 'push' && req.body.ref === 'refs/heads/' + BRANCH) {
         codeUpdate();
         res.status(202).json({ status: 'Code update and deployment started' });
     } else {
