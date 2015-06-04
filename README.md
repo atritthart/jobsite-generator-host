@@ -259,30 +259,39 @@ Finally, create a git tag, reflecting the new docker image version:
 This is needed to ensure there isn't two simultaneous running website generators at a
 given time. Otherwise we might run into concurrency problems.
 
-Currently, the only way for the jobsite generator to start deployment is by
-webhooks. Disabling them will therefore disable all triggered deployments.
+1. In AWS console, go to EC2 => "Auto Scaling Groups" and choose the group
+   corresponding to the existing CloudFormation stack. Then Details tab => Edit
+   and set "Health Check Type" to "EC2". This prevents the EC2 instance from
+   being recycled when healthcheck starts failing after deliberately disabling
+   it.
 
-In AWS console, EC2 => Load Balancers => jobsite-generator-&lt;your-version>
-=> Listeners => Edit => remove the HTTP listener and change HTTPS listener's
-instance ports to a port to 8888 (or any other port the application is not
-listening on) and Save.
+2. SSH into the corresponding EC2 node. See "Debugging EC2 with SSH" below about
+   how to get access.
 
-TODO Later: also disable cronjob if/when we have that.
+3. Just in case, verify there's nothing interesting in the logs by examining
+   `/var/log/syslog`.
+
+4. Pause the docker container by `docker pause` after determining its container
+   id. Example:
+
+        $ docker ps
+        CONTAINER ID        IMAGE                                                      ...
+        fe1a56f9ea54        pierone.stups.zalan.do/workplace/jobsite-generator:2.0.1   ...
+        $ docker pause fe1a56f9ea54
 
 If new stack deployment can't be done for a reason or another as per the
-following instructions, then you still have the possibility to re-enable
-listeners and fall back to the old stack. See below: "Rollback to old stack
-after a failed deployment".
+following instructions, then you still have the possibility to unpause the
+old container (see "Rolling back an old CloudFormation stack" below).
 
 
 ## Create a new CloudFormation stack with Senza
 
-Run `senza create jobsite-generator.yaml <stack-version> <docker-version> <env>`,
+Run `senza create jobsite-generator-<env>.yaml <stack-version> <docker-version> <env>`,
 for example:
 
-    $ senza create jobsite-generator.yaml 42 1.3 qa
+    $ senza create jobsite-generator-qa.yaml 42 1.3
     Generating Cloud Formation template.. OK
-    Creating Cloud Formation stack jobsite-generator-42.. OK
+    Creating Cloud Formation stack jobsite-generator-qa-42.. OK
 
 &lt;stack-version> should be incremented on every deployment. This will create
 a CloudFormation stack jobsite-generator-&lt;stack-version> and use version
@@ -291,7 +300,7 @@ a CloudFormation stack jobsite-generator-&lt;stack-version> and use version
 You can follow the CloudFormation init events either in the AWS web console, or
 on the command line by running `senza events test.yaml <stack-version>`:
 
-    $ senza events jobsite-generator.yaml <stack-version> --watch=2
+    $ senza events jobsite-generator-<env>.yaml <stack-version> --watch=2
 
 If creating fails and gets rolled back, then it might be that your Docker
 image version doesn't match one that has been deployed to Pier One. See
@@ -352,12 +361,13 @@ That's it!
    CloudFormation stacks are up and running. If there are, disallow access to
    their webhooks to disable them.
 
-2. Re-enable HTTPS and HTTP listening, see "Configure the load balancer to
-   listen to plain HTTP in port 80".
+2. Ensure Route53 domain points to the old stack's load balancer.
 
-3. Ensure Route53 domain points to the old stack's load balancer.
+3. Unpause the Docker container with `docker unpause`.
 
-4. Test healthcheck and jobsite generation by triggering with Prismic webhook.
+4. Switch the Auto Scaling Group healthcheck type back to "ELB".
+
+5. Test healthcheck and jobsite generation by triggering with Prismic webhook.
 
 
 
