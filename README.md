@@ -123,7 +123,7 @@ This is needed for Piu SSH access to EC2 instances.
 
 
 
-# Creating or updating the Jobsite Generator instance
+# Updating static generator code
 
 ## Verfify that everything works
 
@@ -166,6 +166,29 @@ After tests pass, merge every changed submodule to QA:
     git pull --rebase
     git merge develop
     git push origin qa
+
+Pushing to QA in jobsite-static-gen project will trigger the jobsite-generator
+QA version to deploy updated code into tech.workplace.zalan.do . If this is all
+you need, then test again in QA after a moment (deploy takes roughly 5 minutes),
+and if everything is ok, then trigger deploy to PROD in the same way:
+
+    git checkout qa
+    git pull --rebase
+    git checkout prod
+    git pull --rebase
+    git merge qa
+    git push origin prod
+
+
+
+
+# Creating or updating the Jobsite Generator Docker image
+
+If you also need to update e.g. the `server.js` code or make other changes
+affecting the Docker image, github hook triggering is not enough. For an
+update, push jobsite-generator-host project code into QA, deploy into
+jobsite-generator-qa.workplace.zalan.do (using the instructions below) and
+then if that works, further into PROD in jobsite-generator.workplace.zalan.do .
 
 
 ## Check out and update the generator host if needed
