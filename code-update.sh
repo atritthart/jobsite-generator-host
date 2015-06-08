@@ -19,7 +19,10 @@ git checkout "${BRANCH}"
 git reset --hard "origin/${BRANCH}"
 git clean --force
 npm install
-cd "${STATIC_SITE_GEN}/lib/imgurl-reprocessor" && npm install
-cd "${STATIC_SITE_GEN}/lib/metalsmith-greenhouse-imgurl" && npm install
-cd "${STATIC_SITE_GEN}/lib/metalsmith-prismic" && npm install
-cd "${STATIC_SITE_GEN}/lib/swig-viewmodel" && npm install
+cd "${STATIC_SITE_GEN}/lib
+for LIB in *; do
+    cd "${STATIC_SITE_GEN}/lib/${LIB}"
+    if [ -r package.json ]; then
+        npm install
+    fi
+done
