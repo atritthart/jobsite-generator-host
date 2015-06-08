@@ -397,6 +397,7 @@ This has already been done, but documentation left here as a reference if needed
 ## S3 bucket setup
 
 1. Create a bucket with the name zalando-jobsite-&lt;env> (&lt;env>=dev/qa/prod)
+
 2. Set bucket world-readable Properties => Permissions: "Add bucket policy" with content
 
         {
@@ -412,8 +413,8 @@ This has already been done, but documentation left here as a reference if needed
           ]
         }
 
-3. Under "Static Website Hosting", choose "Enable website hosting" with index document
-   index.html
+3. Under "Static Website Hosting", choose "Enable website hosting" with Index Document
+   `index.html` and Error Document `404.html`.
 
 
 ## Prismic.io webhooks setup
