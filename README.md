@@ -557,6 +557,11 @@ Exmaple:
     docker run -e PRISMIC_SECRET=1234 -e PRISMIC_APIURL=https://zalando-jobsite.prismic.io/api \
      -p 8080:8080 -i -t pierone.stups.zalan.do/workplace/jobsite-generator:1.3
 
+To get the latest docker image version:
+    
+    pierone login -U <USERNAME>
+    pierone tags workplace
+
 The environment variables used by the node application need to be passed via
 the `-e` parameter of `docker run`. For production AWS, the values are taken from
 jobsite-generator.yaml and added in the CloudFormation template, but this is not the case
