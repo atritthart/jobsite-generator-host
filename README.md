@@ -68,9 +68,9 @@ is needed:
 For PierOne Docker registry, do a first-time login and configure:
 
     $ pierone login
-    Please enter the Pier One URL: https://pierone.stups.zalan.do 
+    Please enter the Pier One URL: pierone.stups.zalan.do
     Getting OAuth2 token "pierone"..
-    Please enter the OAuth access token service URL: https://token.auth.zalando.com/access_token
+    Please enter the OAuth access token service URL: token.auth.zalando.com/access_token
     Password:
 
 The configuration is stored under "~/Library/Application Support/pierone" for
@@ -134,7 +134,7 @@ Deploy to dev first to test:
     git pull --rebase
     git merge qa
 
-    cd static-site-gen
+    cd jobsite-static-gen
     git checkout develop
     git pull --rebase
     git merge qa
@@ -401,19 +401,21 @@ This has already been done, but documentation left here as a reference if needed
     $ senza init jobsite-generator.default.yaml
     Please select the project template
     1) bgapp: Background app with single EC2 instance
-    2) webapp: HTTP app with auto scaling, ELB and DNS
-    Please select (1-2): 2
+    2) postgresapp: HA Postgres app, which needs an S3 bucket to store WAL files
+    3) webapp: HTTP app with auto scaling, ELB and DNS
+    Please select (1-3): 3
     Application ID [hello-world]: jobsite-generator
-    Docker image [stups/hello-world]: workplace/jobsite-generator
+    Docker image without tag/version (e.g. "pierone.example.org/myteam/myapp") [stups/hello-world]: workplace/jobsite-generator
     HTTP port [8080]:
     HTTP health check path [/]:
     EC2 instance type [t2.micro]:
-    Checking security group app-hello-world.. OK
-    Security group app-hello-world does not exist. Do you want Senza to create it now? [Y/n]:
-    Checking security group app-hello-world-lb.. OK
-    Security group app-hello-world-lb does not exist. Do you want Senza to create it now? [Y/n]:
-    Creating IAM role app-hello-world.. OK
-    Generating Senza definition file test.yaml.. OK
+    Mint S3 bucket name [zalando-stups-mint-067144859345-eu-central-1]:
+    Checking security group app-jobsite-generator.. OK
+    Checking security group app-jobsite-generator-lb.. OK
+    Checking IAM role app-jobsite-generator.. OK
+    IAM role app-jobsite-generator already exists. Do you want Senza to overwrite the role policy? [y/N]: y
+    Updating IAM role policy of app-jobsite-generator.. OK
+    Generating Senza definition file jobsite-generator.default.yaml.. OK
 
 
 
@@ -421,7 +423,8 @@ This has already been done, but documentation left here as a reference if needed
 
 1. Create a bucket with the name zalando-jobsite-&lt;env> (&lt;env>=dev/qa/prod)
 
-2. Set bucket world-readable Properties => Permissions: "Add bucket policy" with content
+2. Set bucket world-readable Properties => Permissions: "Add bucket policy" with the
+   following content (replacing &lt;TODO_ENV> with the correct environment):
 
         {
           "Version": "2012-10-17",
@@ -431,7 +434,7 @@ This has already been done, but documentation left here as a reference if needed
               "Effect": "Allow",
               "Principal": "*",
               "Action": "s3:GetObject",
-              "Resource": "arn:aws:s3:::tech.workplace.zalan.do/*"
+              "Resource": "arn:aws:s3:::tech-<TODO_ENV>.workplace.zalan.do/*"
             }
           ]
         }
@@ -524,14 +527,14 @@ See http://stups.readthedocs.org/en/latest/user-guide/troubleshooting.html
 
 # Development environment
 
-## Running the static-site-gen server
+## Running the jobsite-static-gen server
 
 Setting up environment:
 
     export PRISMIC_SECRET=1234
     export PRISMIC_APIURL=https://zalando-jobsite.prismic.io/api
 
-    $ cd static-site-gen
+    $ cd jobsite-static-gen
     $ server.js
     Server listening at http://0.0.0.0:8080
 
