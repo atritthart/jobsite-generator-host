@@ -19,9 +19,8 @@ git checkout "${BRANCH}"
 git reset --hard "origin/${BRANCH}"
 git clean --force
 npm install
-cd "${STATIC_SITE_GEN}/lib
-for LIB in *; do
-    cd "${STATIC_SITE_GEN}/lib/${LIB}"
+for LIB in "${STATIC_SITE_GEN}"/lib/*; do
+    cd "${LIB}"
     if [ -r package.json ]; then
         npm install
     fi
