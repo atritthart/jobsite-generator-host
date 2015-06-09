@@ -1,5 +1,6 @@
 node_modules
-jobsite-generator-*.yaml
+/jobsite-generator-qa.yaml
+/jobsite-generator-prod.yaml
 
 # Elastic Beanstalk Files
 .elasticbeanstalk/*

@@ -1,0 +1,46 @@
+
+# basic information for generating and executing this definition
+SenzaInfo:
+  StackName: jobsite-generator-dev
+  Parameters:
+    - ImageVersion:
+        Description: "Docker image version of jobsite-generator."
+
+# a list of senza components to apply to the definition
+SenzaComponents:
+
+  # this basic configuration is required for the other components
+  - Configuration:
+      Type: Senza::StupsAutoConfiguration # auto-detect network setup
+
+  # will create a launch configuration and auto scaling group with scaling triggers
+  - AppServer:
+      Type: Senza::TaupageAutoScalingGroup
+      InstanceType: t2.micro
+      SecurityGroups:
+        - app-jobsite-generator
+      IamRoles:
+        - app-jobsite-generator
+      ElasticLoadBalancer: AppLoadBalancer
+      TaupageConfig:
+        runtime: Docker
+        source: "pierone.stups.zalan.do/workplace/jobsite-generator:{{Arguments.ImageVersion}}"
+        environment:
+          TFOX_ENV: dev
+          JOBSITE_DEPLOY_SCHEDULED: true
+          PRISMIC_SECRET: "NOT-IN-USE"
+          PRISMIC_APIURL: "https://zalando-jobsite.prismic.io/api"
+          # workaround for https://github.com/tkellen/js-v8flags/issues/17
+          HOME: "/opt/workplace/static-site-gen/build"
+        ports:
+          8080: 8080
+        region: "eu-west-1"
+        mint_bucket: zalando-stups-mint-067144859345-eu-west-1
+
+  # creates an ELB entry and Route53 domains to this ELB
+  - AppLoadBalancer:
+      Type: Senza::WeightedDnsElasticLoadBalancer
+      HTTPPort: 8080
+      HealthCheckPath: /healthcheck
+      SecurityGroups:
+        - app-jobsite-generator-lb
