@@ -1,6 +1,5 @@
 node_modules
 jobsite-generator-*.yaml
-/config-dev.js
 
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
