@@ -123,7 +123,13 @@ This is needed for Piu SSH access to EC2 instances.
 
 
 
-# Updating static generator code
+# Updating jobsite generator host
+
+This is required if you need to make changes to e.g. `server.js` backend
+or AWS stack configuration.
+
+If you only need to update jobsite-static-gen code, then pushing to
+Github qa or master branches will trigger deployment.
 
 ## Verfify that everything works
 
