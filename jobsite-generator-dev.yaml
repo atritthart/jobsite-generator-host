@@ -27,7 +27,7 @@ SenzaComponents:
         source: "pierone.stups.zalan.do/workplace/jobsite-generator:{{Arguments.ImageVersion}}"
         environment:
           TFOX_ENV: dev
-          JOBSITE_DEPLOY_SCHEDULED: true
+          JOBSITE_DEPLOY_SCHEDULED: false
           PRISMIC_SECRET: "NOT-IN-USE"
           PRISMIC_APIURL: "https://zalando-jobsite.prismic.io/api"
           # workaround for https://github.com/tkellen/js-v8flags/issues/17

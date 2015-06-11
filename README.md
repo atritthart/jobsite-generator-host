@@ -204,6 +204,7 @@ then if that works, further into PROD in jobsite-generator.workplace.zalan.do .
 
 Make sure your Senza YAML configuration is up to date:
 
+    diff jobsite-generator.default.yaml jobsite-generator-dev.yaml
     diff jobsite-generator.default.yaml jobsite-generator-qa.yaml
     diff jobsite-generator.default.yaml jobsite-generator-prod.yaml
 

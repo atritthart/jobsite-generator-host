@@ -27,7 +27,7 @@ SenzaComponents:
         source: "pierone.stups.zalan.do/workplace/jobsite-generator:{{Arguments.ImageVersion}}"
         environment:
           TFOX_ENV: <TODO-FILL-IN>
-          JOBSITE_DEPLOY_SCHEDULED: true
+          JOBSITE_DEPLOY_SCHEDULED: <TODO true for prod/qa and false for dev>
           PRISMIC_SECRET: "<TODO-FILL-IN>"
           PRISMIC_APIURL: "<TODO-FILL-IN>"
           # workaround for https://github.com/tkellen/js-v8flags/issues/17
