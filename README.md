@@ -205,6 +205,7 @@ jobsite-generator.workplace.zalan.do .
 
     cd jobsite-generator-host
     git checkout develop
+    git pull --rebase
 
 Make sure your Senza YAML configuration is up to date:
 
@@ -212,12 +213,15 @@ Make sure your Senza YAML configuration is up to date:
     diff jobsite-generator.default.yaml jobsite-generator-qa.yaml
     diff jobsite-generator.default.yaml jobsite-generator-prod.yaml
 
-If there are other differences than the Prismic API credentials (SECRET, APIURL)
-and environment, update your config files accordingly.
+If there are other differences than environment, Prismic API credentials
+(SECRET, APIURL), and jobsite scheduling, update your config files accordingly.
 
-Then, commit submodule reference updates in the jobsite-generator-host project
-and merge to QA:
 
+### For QA builds, update code and push
+
+    git checkout qa
+    git pull --rebase
+    git checkout develop
     git merge qa
     git push origin develop
     git checkout qa
@@ -320,9 +324,9 @@ old container (see "Rolling back an old CloudFormation stack" below).
 Run `senza create jobsite-generator-<env>.yaml <stack-version> <docker-version>`,
 for example:
 
-    $ senza create jobsite-generator-qa.yaml 42 1.3
+    $ senza create jobsite-generator-dev.yaml 42 1.3
     Generating Cloud Formation template.. OK
-    Creating Cloud Formation stack jobsite-generator-qa-42.. OK
+    Creating Cloud Formation stack jobsite-generator-dev-42.. OK
 
 &lt;stack-version> should be incremented on every deployment. This will create
 a CloudFormation stack jobsite-generator-&lt;stack-version> and use version
