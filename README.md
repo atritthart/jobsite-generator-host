@@ -321,6 +321,10 @@ old container (see "Rolling back an old CloudFormation stack" below).
 
 ## Create a new CloudFormation stack with Senza
 
+Check again the current stack versions with `senza list`. The stack version
+number should be incremented on every deployment, and so that identical
+deployments into different environments have the same stack version number.
+
 Run `senza create jobsite-generator-<env>.yaml <stack-version> <docker-version>`,
 for example:
 
@@ -328,9 +332,8 @@ for example:
     Generating Cloud Formation template.. OK
     Creating Cloud Formation stack jobsite-generator-dev-42.. OK
 
-&lt;stack-version> should be incremented on every deployment. This will create
-a CloudFormation stack jobsite-generator-&lt;stack-version> and use version
-&lt;dockerimg-version> Docker image from Pier One.
+This will create a CloudFormation stack jobsite-generator-&lt;stack-version>
+and use version &lt;dockerimg-version> Docker image from Pier One.
 
 You can follow the CloudFormation init events either in the AWS web console, or
 on the command line by running `senza events test.yaml <stack-version>`:
