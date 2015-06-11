@@ -123,35 +123,39 @@ This is needed for Piu SSH access to EC2 instances.
 
 
 
-# Updating jobsite generator host
+# Updating jobsite static generator code
 
-This is required if you need to make changes to e.g. `server.js` backend
-or AWS stack configuration.
+This will deploy a new version of static generator code. If you need to modify
+the jobsite generator host itself (like `server.js` or AWS stack configuration
+from the `jobsite-generator-host` project), then see below
+"Creating or updating the Jobsite Generator Docker image".
 
-If you only need to update jobsite-static-gen code, then pushing to
-Github qa or master branches will trigger deployment.
 
 ## Verfify that everything works
 
-Deploy to dev first to test:
+Ensure latest code is in place and deploy to dev first to test:
 
     cd metalsmith-greenhouse
     git checkout develop
     git pull --rebase
     git merge qa
+    git push
 
     cd jobsite-static-gen
     git checkout develop
     git pull --rebase
     git merge qa
-    ./node_modules/.bin/gulp deploy -e dev
+    git push
 
-Note: rst2html does not necessarily produce same output or even work well
-with a local build, so for RST blog posts, you need to test build from the real
-Docker container.
+One of these cause Github webhook to trigger build to dev environment in
+http://tech-dev.workplace.zalan.do .
 
-In http://zalando-tfox-dev.s3-website.eu-central-1.amazonaws.com/build/latest
-check manually:
+You can also build directly from local development host by issuing
+`gulp -e dev deploy`. However, note: rst2html does not necessarily produce same
+output or even work well with a local build, so for RST blog posts, you need to
+test building these from the real Docker container as well.
+
+In http://tech-dev.workplace.zalan.do check manually:
 
 * Front page
 * Job ads list
@@ -166,20 +170,17 @@ check manually:
 
 After tests pass, merge every changed submodule to QA:
 
-    git checkout develop
-    git pull --rebase
     git checkout qa
     git pull --rebase
     git merge develop
     git push origin qa
 
 Pushing to QA in jobsite-static-gen project will trigger the jobsite-generator
-QA version to deploy updated code into tech.workplace.zalan.do . If this is all
-you need, then test again in QA after a moment (deploy takes roughly 5 minutes),
-and if everything is ok, then trigger deploy to PROD in the same way:
+QA version to deploy updated code into https://tech.workplace.zalan.do . If
+this is all you need, then test again in QA after a moment (deploy takes
+roughly 5 minutes), and if everything is ok, then trigger deploy to PROD in
+the same way:
 
-    git checkout qa
-    git pull --rebase
     git checkout prod
     git pull --rebase
     git merge qa
@@ -191,10 +192,13 @@ and if everything is ok, then trigger deploy to PROD in the same way:
 # Creating or updating the Jobsite Generator Docker image
 
 If you also need to update e.g. the `server.js` code or make other changes
-affecting the Docker image, github hook triggering is not enough. For an
-update, push jobsite-generator-host project code into QA, deploy into
-jobsite-generator-qa.workplace.zalan.do (using the instructions below) and
-then if that works, further into PROD in jobsite-generator.workplace.zalan.do .
+affecting the Docker image, github hook triggering is not enough.
+
+For an update, push jobsite-generator-host project code first into DEV and then
+QA, deploy into jobsite-generator-dev.workplace.zalan.do and
+jobsite-generator-qa.workplace.zalan.do respectively (using the instructions
+below) and then if that works, further into PROD in
+jobsite-generator.workplace.zalan.do .
 
 
 ## Check out and update the generator host if needed
