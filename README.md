@@ -22,14 +22,6 @@ For example, Mac OS X & Homebrew: `brew install python3`
     git clone git@github.com:zalando/jobsite-static-gen.git
     git clone git@github.com:zalando/metalsmith-greenhouse.git
 
-Configure server:
-
-    cp jobsite-static-gen/config.default.js jobsite-generator-host/config-dev.js
-    cp jobsite-static-gen/config.default.js jobsite-generator-host/config-qa.js
-    cp jobsite-static-gen/config.default.js jobsite-generator-host/config-prod.js
-
-Then fill in relevant values.
-
 For deploying locally to dev, you may want to:
 
     ln -s ../jobsite-generator-host/config-dev.js jobsite-static-gen/
