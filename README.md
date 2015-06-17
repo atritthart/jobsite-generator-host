@@ -159,6 +159,9 @@ In http://tech-dev.workplace.zalan.do check manually:
 * One individual MD-source blog post
 * One location
 * Relocation page
+* Working @ Z
+* Verify that the GA tracking code ("UA-XXXXXXX-XX") is present by examining the
+  source code on any page
 
 After tests pass, merge every changed submodule to QA:
 
