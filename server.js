@@ -2,7 +2,7 @@
 
 var express = require('express');
 var bodyParser = require('body-parser');
-var exec = require('child_process').exec;
+var startProcess = require('./process').startProcess;
 
 var ENV         = process.env.TFOX_ENV;
 var DEPLOY_TASK = 'deploy';
@@ -45,7 +45,11 @@ if (DEPLOY_SCHEDULED) {
     debug('Scheduled deployment disabled');
 }
 
-setTimeout(codeUpdateAndDeploy, 0);
+setTimeout(startCodeUpdateAndDeploy, 0);
+
+/*
+ * HTTP server
+ */
 
 // parse json on all requests
 app.use(bodyParser.json());
@@ -87,7 +91,7 @@ app.post('/github-hook', function (req, res, next) {
         res.send('OK');
     } else if (type === 'push') {
         if (req.body.ref === 'refs/heads/' + BRANCH) {
-            codeUpdateAndDeploy();
+            startCodeUpdateAndDeploy();
             res.status(202).json({ status: 'Code update and deployment started' });
         } else {
             res.send('OK');
@@ -97,66 +101,6 @@ app.post('/github-hook', function (req, res, next) {
         next(new Error('Invalid request'));
     }
 });
-
-function startDeploy() {
-    if (deployProcess) {
-        debug('Deployment already in progress');
-        return false;
-    }
-    debug('Starting deployment to', ENV);
-
-    deployProcessStartTime = Date.now();
-    deployProcess = exec('./node_modules/.bin/gulp ' + DEPLOY_TASK + ' -e ' + ENV, {
-        timeout: 30*60*1000  // 30 mins
-    });
-
-    deployProcess.on('exit', function(code, signal) {
-        deployProcess = null;
-        var runtimeMillis = Date.now() - deployProcessStartTime;
-        var runtimeSecStr = parseInt(runtimeMillis / 1000, 10) + 's';
-        if (code === 0) {
-            debug('Deployment to', ENV, 'succeeded in', runtimeSecStr);
-        } else if (code === null) {
-            console.log('Deployment process ended abnormally after', runtimeSecStr, 'with signal', signal);
-        } else {
-            console.log('Deployment process ended after', runtimeSecStr, 'with exit code', code);
-        }
-    });
-
-    deployProcess.stderr.on('data', logDataLine);
-    if (DEBUG) {
-        deployProcess.stdout.on('data', logDataLine);
-    }
-
-    return true;
-}
-
-function codeUpdateAndDeploy() {
-    debug('Starting code update for', ENV);
-
-    var updateProcStartTime = Date.now();
-    var updateProc = exec('bash /opt/workplace/code-update.sh ' + BRANCH, {
-        timeout: 10*60*1000  // 10 mins
-    });
-
-    updateProc.on('exit', function(code, signal) {
-        var runtimeMillis = Date.now() - deployProcessStartTime;
-        var runtimeSecStr = parseInt(runtimeMillis / 1000, 10) + 's';
-        if (code === 0) {
-            debug('Code update for', ENV, 'succeeded in', runtimeSecStr);
-            startDeploy();
-        } else if (code === null) {
-            console.log('Code update ended abnormally after', runtimeSecStr, 'with signal', signal);
-        } else {
-            console.log('Code update ended after', runtimeSecStr, 'with exit code', code);
-        }
-    });
-
-    updateProc.stderr.on('data', logDataLine);
-    if (DEBUG) {
-        updateProc.stdout.on('data', logDataLine);
-    }
-}
 
 // handling non-matching routes
 app.use(function(req, res, next) {
@@ -175,12 +119,50 @@ var server   = app.listen(PORT, function() {
     console.log('Server listening at http://%s:%s', host, port);
 });
 
+/*
+ * Update/deploy processes
+ */
+
+var deploy = {
+    title: 'Deployment for ' + ENV,
+    execCommand: './node_modules/.bin/gulp ' + DEPLOY_TASK + ' -e ' + ENV,
+    successCallback: null,
+    timeout: 30*60*1000,
+    debug: DEBUG && debug,
+    process: null,
+    startTime: null,
+};
+
+var codeUpdateAndDeploy = {
+    title: 'Code update for ' + ENV,
+    execCommand: 'bash /opt/workplace/code-update.sh ' + BRANCH,
+    successCallback: startDeploy,
+    timeout: 10*60*1000,
+    debug: DEBUG && debug,
+    process: null,
+    startTime: null,
+};
+
+function startDeploy() {
+    if (deploy.process) {
+        debug('Deployment already in progress');
+        return false;
+    }
+
+    startProcess(deploy);
+    return true;
+}
+
+function startCodeUpdateAndDeploy() {
+    startProcess(codeUpdateAndDeploy);
+}
+
+/*
+ * Helpers
+ */
+
 function debug(arg1 /*...*/) {
     if (DEBUG) {
         console.log.apply(console, arguments);
     }
-}
-
-function logDataLine(data) {
-    process.stdout.write(data.toString());
 }
