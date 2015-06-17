@@ -495,6 +495,14 @@ For example:
 
 ## Debugging EC2 with SSH
 
+General instructions: http://docs.stups.io/en/latest/user-guide/ssh-access.html
+
+We need first a running ssh-agent with the identity file matching to the one you
+uploaded in ZACK:
+
+    $ ssh-add
+    Identity added: /Users/ekan/.ssh/id_rsa (/Users/ekan/.ssh/id_rsa)
+
 Figure out the EC2 instance's IP address with `senza instances`:
 
     $ senza instances
@@ -504,31 +512,33 @@ Figure out the EC2 instance's IP address with `senza instances`:
 
 Then run:
 
-    piu --even-url https://even.stups.zalan.do --odd-host odd-eu-central-1.workplace.zalan.do \
-      --user <username> <internal-ip> <comment>
+    USER=<zalando-shortusername> piu <internal-ip> <comment>
 
+This outputs the SSH command to run next, which you should then execute.
 Example:
 
-    $ piu --even-url https://even.stups.zalan.do --odd-host odd-eu-central-1.workplace.zalan.do \
-      --user ekantola 172.31.145.144 "Just testing around"
-    Password:
+    $ USER=ekantola piu 172.31.145.144 'Just testing around'
     Requesting access to host 172.31.145.144 via odd-eu-central-1.workplace.zalan.do for ekantola..
     Access to host odd-eu-central-1.workplace.zalan.do/52.28.48.168 for user ekantola was granted.
     You can now access your server with the following command:
     ssh -tA ekantola@odd-eu-central-1.workplace.zalan.do ssh ekantola@172.31.145.144
 
-We need a running ssh-agent with the identity file matching to the one you uploaded in ZACK:
+    $ ssh -tA ekantola@odd-eu-central-1.workplace.zalan.do ssh ekantola@172.31.145.144
+             _____
+    Welcome /__   \__ _ _   _ _ __   __ _  __ _  ___
+         to   / /\/ _` | | | | '_ \ / _` |/ _` |/ _ \
+      STUPS  / / | (_| | |_| | |_) | (_| | (_| |  __/
+             \/   \__,_|\__,_| .__/ \__,_|\__, |\___|
+                         |_|          |___/
+        All actions will be logged!
 
-    $ ssh-add
-    Identity added: /Users/ekan/.ssh/id_rsa (/Users/ekan/.ssh/id_rsa)
+    [...]
 
-Now logging in with the ssh cmdline output by Piu should work:
-
-    $ ssh -tA ekantola@odd-eu-central-1.workplace.zalan.do ssh ekantola@172.31.145.144
+    ekantola@ip-172-31-145-144:~$ 
 
 The first place to start looking for log messages would be `/var/log/syslog`
 since the Zalando AWS Docker setup is configured to output everything from
-containers to there (option ``).
+containers to there (`docker --log-driver=syslog`).
 
 
 ## Zalando STUPS hints
