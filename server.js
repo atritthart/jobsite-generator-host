@@ -112,13 +112,14 @@ function startDeploy() {
 
     deployProcess.on('exit', function(code, signal) {
         deployProcess = null;
-        var runtimeSec = parseInt((Date.now() - deployProcessStartTime) / 1000, 10) + 's';
+        var runtimeMillis = Date.now() - deployProcessStartTime;
+        var runtimeSecStr = parseInt(runtimeMillis / 1000, 10) + 's';
         if (code === 0) {
-            debug('Deployment to', ENV, 'succeeded in', runtimeSec);
+            debug('Deployment to', ENV, 'succeeded in', runtimeSecStr);
         } else if (code === null) {
-            console.log('Deployment process ended abnormally after', runtimeSec, 'with signal', signal);
+            console.log('Deployment process ended abnormally after', runtimeSecStr, 'with signal', signal);
         } else {
-            console.log('Deployment process ended after', runtimeSec, 'with exit code', code);
+            console.log('Deployment process ended after', runtimeSecStr, 'with exit code', code);
         }
     });
 
@@ -139,14 +140,15 @@ function codeUpdateAndDeploy() {
     });
 
     updateProc.on('exit', function(code, signal) {
-        var runtimeSec = parseInt((Date.now() - updateProcStartTime) / 1000, 10) + 's';
+        var runtimeMillis = Date.now() - deployProcessStartTime;
+        var runtimeSecStr = parseInt(runtimeMillis / 1000, 10) + 's';
         if (code === 0) {
-            debug('Code update for', ENV, 'succeeded in', runtimeSec);
+            debug('Code update for', ENV, 'succeeded in', runtimeSecStr);
             startDeploy();
         } else if (code === null) {
-            console.log('Code update ended abnormally after', runtimeSec, 'with signal', signal);
+            console.log('Code update ended abnormally after', runtimeSecStr, 'with signal', signal);
         } else {
-            console.log('Code update ended after', runtimeSec, 'with exit code', code);
+            console.log('Code update ended after', runtimeSecStr, 'with exit code', code);
         }
     });
 
