@@ -7,11 +7,11 @@ RUN apt-get install -y python-docutils
 RUN apt-get install -y python-markdown
 RUN gem install scss-lint
 
-RUN mkdir -p /opt/workplace
+RUN mkdir -p /opt/workplace/server
 RUN useradd --home-dir /opt/workplace/static-site-gen/build --no-create-home --uid 999 workplace
 
-ADD server.js package.json code-update.sh README.md /opt/workplace/
-RUN cd /opt/workplace && npm install
+ADD server /opt/workplace/server/
+RUN cd /opt/workplace/server && npm install
 
 RUN install -d -m 777 -o workplace /opt/workplace/metalsmith-greenhouse
 RUN install -d -m 777 -o workplace /opt/workplace/static-site-gen
@@ -23,5 +23,5 @@ RUN cd /opt/workplace/static-site-gen && git init && git remote add origin https
 
 EXPOSE 8080
 
-WORKDIR /opt/workplace
+WORKDIR /opt/workplace/server
 CMD ["node", "server.js"]

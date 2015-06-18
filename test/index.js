@@ -1,6 +1,6 @@
 'use strict';
 
-var startProcess = require('../process').startProcess,
+var startProcess = require('../lib/process').startProcess,
     assert = require('assert');
 
 var NO_OP = function() {};

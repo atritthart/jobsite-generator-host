@@ -1,8 +1,1 @@
-metalsmith-greenhouse/node_modules
-static-site-gen/node_modules
-static-site-gen/lib/*/node_modules
-static-site-gen/log
-statis-site-gen/git
-static-site-gen/build
-static-site-gen/dist
-static-site-gen/.awspublish-zalando-tfox-dev
+src/node_modules

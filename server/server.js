@@ -135,7 +135,7 @@ var deploy = {
 
 var codeUpdateAndDeploy = {
     title: 'Code update for ' + ENV,
-    execCommand: 'bash /opt/workplace/code-update.sh ' + BRANCH,
+    execCommand: 'bash /opt/workplace/server/code-update.sh ' + BRANCH,
     successCallback: startDeploy,
     timeout: 10*60*1000,
     debug: DEBUG && debug,
