@@ -102,13 +102,11 @@ app.post('/github-hook', function (req, res, next) {
     }
 });
 
-// handling non-matching routes
-app.use(function(req, res, next) {
+app.use(function nonMatchingRouteHandler(req, res, next) {
     res.sendStatus(404);
 });
 
-// error handler
-app.use(function(err, req, res, next) {
+app.use(function errorHandler(err, req, res, next) {
     res.json({error: err.message});
 });
 
