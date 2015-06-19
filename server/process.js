@@ -3,11 +3,13 @@
 var exec = require('child_process').exec;
 
 var NO_DEBUG = function() {};
+var MILLISECONDS = 'Milliseconds';
 
 module.exports = {
     /**
      * @param {Object} processObj
      *   @property {String} execCommand Command to execute
+     *   @property {String} name (optional) Process name tag to be used for metrics
      *   @property {String} title (optional) Human-readable title for logging output
      *   @property {Function} successCallback (optional) Function to execute on successful process end
      *   @property {Function} errorCallback(exitCode, signal) (optional) Function to execute on unsuccessful process end
@@ -24,6 +26,7 @@ module.exports = {
     startProcess: function(processObj, dataLogger) {
         dataLogger = dataLogger || logDataLine;
         var debug = processObj.debug || NO_DEBUG;
+        var name = processObj.name || 'Process';
         var title = processObj.title || 'Process';
         var options = {
             timeout: processObj.timeout
@@ -33,6 +36,7 @@ module.exports = {
 
         processObj.startTime = Date.now();
         var proc = processObj.process = exec(processObj.execCommand, options);
+        putMetricData(name + 'Started');
 
         proc.on('exit', function(code, signal) {
             processObj.process = null;
@@ -40,15 +44,20 @@ module.exports = {
             var runtimeSecStr = Math.round(runtimeMillis / 100) / 10 + 's';
             if (code === 0) {
                 debug(title, 'succeeded in', runtimeSecStr);
+                putMetricData(name + 'Success', runtimeMillis, MILLISECONDS);
+                putMetricData(name + 'ExitCode', code);
                 if (processObj.successCallback) {
                     processObj.successCallback();
                 }
             } else {
                 if (code === null) {
                     dataLogger([title, 'ended abnormally after', runtimeSecStr, 'with signal', signal].join(' ') + '\n');
+                    putMetricData(name + 'Signal', signal);
                 } else {
                     dataLogger([title, 'ended after', runtimeSecStr, 'with exit code', code].join(' ') + '\n');
+                    putMetricData(name + 'ExitCode', code);
                 }
+                putMetricData(name + 'FailureTime', runtimeMillis, MILLISECONDS);
                 if (processObj.errorCallback) {
                     processObj.errorCallback(code, signal);
                 }

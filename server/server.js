@@ -3,6 +3,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var startProcess = require('./process').startProcess;
+var putMetricData = require('./metrics').putData;
 
 var ENV         = process.env.TFOX_ENV;
 var DEPLOY_TASK = 'deploy';
@@ -26,6 +27,9 @@ if (!BRANCH) {
     console.error('Environment variable TFOX_ENV needs to be one of: dev, qa, prod');
     process.exit(1);
 }
+
+var MILLISECONDS = 'Milliseconds';
+var ENV_CAPS = ENV.toUpperCase();
 
 var TYPE   = "api-update";
 var TEST_TYPE = "test-trigger";
@@ -68,6 +72,7 @@ app.post('/prismic-hook', function (req, res, next) {
     var type   = req.body.type;
 
     if (secret === SECRET && apiUrl === APIURL && (type === TYPE || type === TEST_TYPE)) {
+        putMetricData('PrismicHookOk');
         if (startDeploy()) {
             res.status(202).json({ status: 'Deployment started' });
         } else {
@@ -75,6 +80,7 @@ app.post('/prismic-hook', function (req, res, next) {
             next(new Error('Deployment already in progress'));
         }
     } else {
+        putMetricData('PrismicHookBadRequest');
         res.status(400);
         next(new Error('Invalid POST data on prismic hook'));
     }
@@ -88,9 +94,11 @@ app.post('/github-hook', function (req, res, next) {
     var type = req.get('X-Github-Event');
 
     if (type === 'ping') {
+        putMetricData('GithubHookPing');
         res.send('OK');
     } else if (type === 'push') {
         if (req.body.ref === 'refs/heads/' + BRANCH) {
+            putMetricData('GithubHookDeploy');
             startCodeUpdateAndDeploy();
             res.status(202).json({ status: 'Code update and deployment started' });
         } else {
@@ -122,7 +130,8 @@ var server   = app.listen(PORT, function() {
  */
 
 var deploy = {
-    title: 'Deployment for ' + ENV,
+    name: 'Deployment' + ENV_CAPS
+    title: 'Deployment for ' + ENV_CAPS,
     execCommand: './node_modules/.bin/gulp ' + DEPLOY_TASK + ' -e ' + ENV,
     successCallback: null,
     timeout: 30*60*1000,
@@ -132,7 +141,8 @@ var deploy = {
 };
 
 var codeUpdateAndDeploy = {
-    title: 'Code update for ' + ENV,
+    name: 'CodeUpdate' + ENV_CAPS
+    title: 'Code update for ' + ENV_CAPS,
     execCommand: 'bash /opt/workplace/server/code-update.sh ' + BRANCH,
     successCallback: startDeploy,
     timeout: 10*60*1000,
@@ -144,6 +154,7 @@ var codeUpdateAndDeploy = {
 function startDeploy() {
     if (deploy.process) {
         debug('Deployment already in progress');
+        putMetricData('DeploymentInProgress', Date.now() - deploy.startTime, MILLISECONDS);
         return false;
     }
 

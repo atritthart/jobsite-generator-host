@@ -28,6 +28,7 @@ SenzaComponents:
         environment:
           TFOX_ENV: dev
           JOBSITE_DEPLOY_SCHEDULED: false
+          JOBSITE_DEPLOY_METRICS_ENABLED: true
           PRISMIC_SECRET: "NOT-IN-USE"
           PRISMIC_APIURL: "https://zalando-jobsite.prismic.io/api"
           # workaround for https://github.com/tkellen/js-v8flags/issues/17

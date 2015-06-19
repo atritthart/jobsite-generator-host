@@ -28,6 +28,7 @@ SenzaComponents:
         environment:
           TFOX_ENV: <TODO-FILL-IN>
           JOBSITE_DEPLOY_SCHEDULED: <TODO true for prod/qa and false for dev>
+          JOBSITE_DEPLOY_METRICS_ENABLED: true
           PRISMIC_SECRET: "<TODO-FILL-IN>"
           PRISMIC_APIURL: "<TODO-FILL-IN>"
           # workaround for https://github.com/tkellen/js-v8flags/issues/17
