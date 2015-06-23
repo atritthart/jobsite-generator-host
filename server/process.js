@@ -1,9 +1,8 @@
 'use strict';
 
-var exec = require('child_process').exec,
-    putMetricData = require('./metrics').putData;
+var exec = require('child_process').exec;
 
-var NO_DEBUG = function() {};
+var noop = function() {};
 var MILLISECONDS = 'Milliseconds';
 
 module.exports = {
@@ -26,7 +25,8 @@ module.exports = {
      */
     startProcess: function(processObj, dataLogger) {
         dataLogger = dataLogger || logDataLine;
-        var debug = processObj.debug || NO_DEBUG;
+        var debug = processObj.debug || noop;
+        var putMetricData = processObj.putMetricData || noop;
         var name = processObj.name || 'Process';
         var title = processObj.title || 'Process';
         var options = {
@@ -66,7 +66,7 @@ module.exports = {
         });
 
         proc.stderr.on('data', dataLogger);
-        if (debug != NO_DEBUG) {
+        if (debug != noop) {
             proc.stdout.on('data', dataLogger);
         }
     }

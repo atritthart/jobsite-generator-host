@@ -1,9 +1,10 @@
 'use strict';
 
 var startProcess = require('../process').startProcess,
-    assert = require('assert');
+    assert = require('assert'),
+    metrics = require('../metrics');
 
-var NO_OP = function() {};
+var noop = function() {};
 
 describe('process utility', function() {
     this.timeout(2000);
@@ -31,7 +32,7 @@ describe('process utility', function() {
         output = '';
         startProcess({
             execCommand: 'echo foo',
-            debug: NO_OP,
+            debug: noop,
             successCallback: assertOutput('foo\n', done)
         }, appendToOutput);
     });
@@ -96,4 +97,27 @@ describe('process utility', function() {
             done();
         }
     }
+});
+
+describe('metrics', function() {
+    var DEBUG = process.env.JOBSITE_GENERATOR_DEBUG;
+
+    it('should run without errors if disabled', function(done) {
+        var putMetricData = metrics({
+            namespace: 'test',
+            debug: DEBUG
+        });
+        putMetricData('SomeTime', 7357, 'Second');
+        done();
+    });
+
+    it('should run without errors if enabled', function(done) {
+        var putMetricData = metrics({
+            namespace: 'test',
+            metricsEnabled: true,
+            debug: DEBUG
+        });
+        putMetricData('SomeTime', 7357, 'Second');
+        done();
+    });
 });

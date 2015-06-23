@@ -3,13 +3,14 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var startProcess = require('./process').startProcess;
-var putMetricData = require('./metrics').putData;
+var metrics = require('./metrics');
 
 var ENV         = process.env.TFOX_ENV;
 var DEPLOY_TASK = 'deploy';
 
 var DEPLOY_INTERVAL  = process.env.JOBSITE_DEPLOY_INTERVAL || 30*60*1000; // 30 mins
 var DEPLOY_SCHEDULED = process.env.JOBSITE_DEPLOY_SCHEDULED;
+var METRICS_ENABLED = process.env.JOBSITE_DEPLOY_METRICS_ENABLED;
 
 var PORT   = process.env.JOBSITE_GENERATOR_PORT || 8080;
 var SECRET = process.env.PRISMIC_SECRET;
@@ -37,6 +38,12 @@ var app    = module.exports = express();
 
 var deployProcess = null;
 var deployProcessStartTime = null;
+
+var putMetricData = metrics({
+    namespace: 'JobsiteGen-' + ENV_CAPS,
+    metricsEnabled: METRICS_ENABLED,
+    debug: DEBUG
+});
 
 process.chdir('/opt/workplace/static-site-gen');
 debug('Debug logging enabled');
@@ -135,6 +142,7 @@ var deploy = {
     execCommand: './node_modules/.bin/gulp ' + DEPLOY_TASK + ' -e ' + ENV,
     successCallback: null,
     timeout: 30*60*1000,
+    putMetricData: putMetricData,
     debug: DEBUG && debug,
     process: null,
     startTime: null,
@@ -146,6 +154,7 @@ var codeUpdateAndDeploy = {
     execCommand: 'bash /opt/workplace/server/code-update.sh ' + BRANCH,
     successCallback: startDeploy,
     timeout: 10*60*1000,
+    putMetricData: putMetricData,
     debug: DEBUG && debug,
     process: null,
     startTime: null,
