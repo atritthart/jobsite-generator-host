@@ -1,11 +1,11 @@
 'use strict';
 
-var startProcess = require('../lib/process').startProcess,
+var startProcess = require('../process').startProcess,
     assert = require('assert');
 
 var NO_OP = function() {};
 
-describe('process tests', function() {
+describe('process utility', function() {
     this.timeout(2000);
 
     var output;

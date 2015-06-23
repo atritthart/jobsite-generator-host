@@ -20,13 +20,13 @@ function putMetricData(metricName, value, unit) {
         MetricData: [{
             MetricName: metricName,
             Value: (value != null) ? value : 1,
-            Unit: unit || 'None';
+            Unit: unit || 'None'
         }]
     }).send();
 }
 
 function debugMetricData(metricName, value, unit) {
-    console.log('Metric data:', metricName, value, unit);
+    console.log.apply(console.log, Array.prototype.concat.apply(['Metric data:'], arguments));
 }
 
 function noop() {

@@ -1,6 +1,7 @@
 'use strict';
 
-var exec = require('child_process').exec;
+var exec = require('child_process').exec,
+    putMetricData = require('./metrics').putData;
 
 var NO_DEBUG = function() {};
 var MILLISECONDS = 'Milliseconds';
