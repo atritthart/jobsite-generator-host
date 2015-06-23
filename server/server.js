@@ -130,7 +130,7 @@ var server   = app.listen(PORT, function() {
  */
 
 var deploy = {
-    name: 'Deployment' + ENV_CAPS
+    name: 'Deployment' + ENV_CAPS,
     title: 'Deployment for ' + ENV_CAPS,
     execCommand: './node_modules/.bin/gulp ' + DEPLOY_TASK + ' -e ' + ENV,
     successCallback: null,
@@ -141,7 +141,7 @@ var deploy = {
 };
 
 var codeUpdateAndDeploy = {
-    name: 'CodeUpdate' + ENV_CAPS
+    name: 'CodeUpdate' + ENV_CAPS,
     title: 'Code update for ' + ENV_CAPS,
     execCommand: 'bash /opt/workplace/server/code-update.sh ' + BRANCH,
     successCallback: startDeploy,
