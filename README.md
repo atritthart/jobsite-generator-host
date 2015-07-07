@@ -515,9 +515,11 @@ Then run:
     USER=<zalando-shortusername> piu <internal-ip> <comment>
 
 This outputs the SSH command to run next, which you should then execute.
-Example:
+Example from the first run, where you need to provide Even and Odd URLs:
 
     $ USER=ekantola piu 172.31.145.144 'Just testing around'
+    Please enter the Even SSH access granting service URL: https://even.stups.zalan.do
+    Please enter the Odd SSH bastion hostname: odd-eu-central-1.workplace.zalan.do
     Requesting access to host 172.31.145.144 via odd-eu-central-1.workplace.zalan.do for ekantola..
     Access to host odd-eu-central-1.workplace.zalan.do/52.28.48.168 for user ekantola was granted.
     You can now access your server with the following command:
