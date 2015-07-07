@@ -59,7 +59,7 @@ is needed:
 
 For PierOne Docker registry, do a first-time login and configure:
 
-    $ pierone login
+    $ pierone login -U <shortusername>
     Please enter the Pier One URL: pierone.stups.zalan.do
     Getting OAuth2 token "pierone"..
     Please enter the OAuth access token service URL: token.auth.zalando.com/access_token
