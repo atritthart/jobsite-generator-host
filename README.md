@@ -475,6 +475,25 @@ Whenever a branch (qa or master) is updated, a code update followed by a deploy
 is triggered in jobsite generator.
 
 
+## Yourturn project setup
+
+This is needed for authenticating deployment in Stups AWS. See
+https://docs.stups.io/en/latest/components/yourturn.html for more info.
+
+1. Open https://yourturn.stups.zalan.do/application and log in
+2. "Create Application"
+3. Set the required fields, should be fairly self-explanatory, and save
+4. Find out the Mint bucket name for the Stups AWS account you are going to
+   deploy to by visiting https://console.aws.amazon.com/s3/home and taking note
+   of the bucket name that starts with "zalando-stups-mint-". For example:
+   "zalando-stups-mint-067144859345-eu-west-1" for the current setup.
+5. Back in Yourturn, open "Access Control" for the new application. There, fill
+   in the text field "Credential Distribution" with the Mint bucket name. Leave
+   everything else as is, then Save.
+6. Now the AWS deployments with `senza` should be able to authenticate for
+   downloading the Docker images from Pier One.
+
+
 
 
 # Troubleshooting
