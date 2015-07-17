@@ -1,10 +1,18 @@
-# Zalando Jobsite Docker project
+# Zalando Jobsite Generator
 
-Docker is used for deployment of the static site generator to AWS Beanstalk. You
-can also use it for local development, of course.
+This service generates a set of static HTML/CSS/JS etc. assets and publishes
+into an S3 bucket for serving to end users.
 
-When updating contents on prismic.io, a webhook triggers a new build of the public
-website through the integrated NodeJS application and corresponding gulp tasks.
+When updating contents on prismic.io, a webhook triggers a new build of the
+public website through the integrated NodeJS application and corresponding gulp
+tasks. The build is also triggered by Github webhooks on code changes in
+develop/qa/master branches. Finally, a build is scheduled every 30 minutes to
+enable updates from Greenhouse, since its webhooks are not suitable for our
+purposes.
+
+Zalando STUPS toolchain and Docker are used for deployment of the static site
+generator to an Amazon Web Services environment. You can also build Docker
+images for local testing purposes.
 
 
 
