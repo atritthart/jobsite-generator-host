@@ -335,7 +335,7 @@ for example:
     Generating Cloud Formation template.. OK
     Creating Cloud Formation stack jobsite-generator-dev-42.. OK
 
-This will create a CloudFormation stack jobsite-generator-&lt;stack-version>
+This will create a CloudFormation stack jobsite-generator-&lt;env>
 and use version &lt;dockerimg-version> Docker image from Pier One.
 
 You can follow the CloudFormation init events either in the AWS web console, or
