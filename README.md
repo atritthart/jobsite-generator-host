@@ -26,9 +26,9 @@ For example, Mac OS X & Homebrew: `brew install python3`
 
 ## Clone projects
 
-    git clone git@github.com:zalando/jobsite-generator-host.git
-    git clone git@github.com:zalando/jobsite-static-gen.git
-    git clone git@github.com:zalando/metalsmith-greenhouse.git
+    git clone https://github.com/zalando/jobsite-generator-host.git
+    git clone https://github.com/zalando/jobsite-static-gen.git
+    git clone https://github.com/zalando/metalsmith-greenhouse.git
 
 For deploying locally to dev, you may want to:
 
